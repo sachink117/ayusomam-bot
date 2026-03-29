@@ -1,4 +1,4 @@
-﻿// ============================================================
+// ============================================================
 // index.js - Entry point
 // Express server + platform routes + scheduled agent jobs
 // ============================================================
@@ -22,12 +22,9 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 // ---- Raw body capture (HMAC signature verification) ----
-app.use((req, res, next) => {
-  let raw = "";
-  req.on("data", chunk => raw += chunk);
-  req.on("end", () => { req.rawBody = raw; next(); });
-});
-app.use(express.json());
+app.use(express.json({
+  verify: (req, res, buf) => { req.rawBody = buf.toString(); }
+}));
 app.use(express.urlencoded({ extended: true }));
 
 // ---- Health check ----
