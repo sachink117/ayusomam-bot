@@ -1,4 +1,4 @@
-﻿// ============================================================
+// ============================================================
 // routes/api.js  —  Dashboard REST API
 // All endpoints prefixed /api/*
 // ============================================================
@@ -17,7 +17,6 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 router.get("/stats", async (req, res) => {
   try {
     const since24h = new Date(Date.now() - 24*3600000).toISOString();
-    const since7d  = new Date(Date.now() - 7*86400000).toISOString();
 
     const [total, today, converted, pending] = await Promise.all([
       supabase.from("conversations").select("id", { count:"exact", head:true }),
@@ -26,18 +25,21 @@ router.get("/stats", async (req, res) => {
       supabase.from("conversations").select("id", { count:"exact", head:true }).eq("stage","payment_pending"),
     ]);
 
-    // Stage distribution for mini funnel
+    // Stage distribution — ALL TIME
     const { data: stageCounts } = await supabase
-      .from("conversations")
-      .select("stage")
-      .gte("created_at", since7d);
-
+      .from("conversations").select("stage");
     const stages = {};
     (stageCounts||[]).forEach(r => { stages[r.stage] = (stages[r.stage]||0)+1; });
 
-    // Platform distribution
+    // Plan distribution (starter vs core) from converted leads
+    const { data: planData } = await supabase
+      .from("conversations").select("plan").eq("stage","converted");
+    const plans = { starter_499: 0, core_1299: 0 };
+    (planData||[]).forEach(r => { if (r.plan) plans[r.plan] = (plans[r.plan]||0)+1; });
+
+    // Platform distribution — ALL TIME
     const { data: platData } = await supabase
-      .from("conversations").select("platform").gte("created_at", since7d);
+      .from("conversations").select("platform");
     const platforms = {};
     (platData||[]).forEach(r => { platforms[r.platform] = (platforms[r.platform]||0)+1; });
 
@@ -48,15 +50,16 @@ router.get("/stats", async (req, res) => {
       pending:   pending.count   || 0,
       stages,
       platforms,
+      plans,
     });
   } catch(err) { res.status(500).json({error: err.message}); }
 });
 
 // ── GET /api/conversations  —  paginated lead list ───────────
-// Query: ?platform=whatsapp&stage=close&search=Rahul&limit=30&offset=0
 router.get("/conversations", async (req, res) => {
   try {
     const { platform, stage, search, limit=30, offset=0 } = req.query;
+
     let q = supabase
       .from("conversations")
       .select("*, lead_profiles(*)")
@@ -67,9 +70,25 @@ router.get("/conversations", async (req, res) => {
     if (stage)    q = q.eq("stage",    stage);
     if (search)   q = q.ilike("name",  `%${search}%`);
 
-    const { data, error, count } = await q;
+    let { data, error } = await q;
+
+    // If lead_profiles table doesn't exist, fall back to simple query
+    if (error && error.message && error.message.includes("lead_profiles")) {
+      let q2 = supabase
+        .from("conversations")
+        .select("*")
+        .order("last_message_at", { ascending:false })
+        .range(parseInt(offset), parseInt(offset)+parseInt(limit)-1);
+      if (platform) q2 = q2.eq("platform", platform);
+      if (stage)    q2 = q2.eq("stage",    stage);
+      if (search)   q2 = q2.ilike("name",  `%${search}%`);
+      const res2 = await q2;
+      data = res2.data;
+      error = res2.error;
+    }
+
     if (error) return res.status(500).json({error: error.message});
-    res.json({ conversations: data||[], total: count||0 });
+    res.json({ conversations: data||[], total: (data||[]).length });
   } catch(err) { res.status(500).json({error: err.message}); }
 });
 
@@ -77,16 +96,22 @@ router.get("/conversations", async (req, res) => {
 router.get("/conversations/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const [convRes, msgRes] = await Promise.all([
-      supabase.from("conversations").select("*, lead_profiles(*)").eq("id", id).single(),
-      supabase.from("messages").select("*").eq("conversation_id", id).order("created_at"),
-    ]);
+
+    let convRes = await supabase.from("conversations").select("*, lead_profiles(*)").eq("id", id).single();
+
+    // Fallback if lead_profiles missing
+    if (convRes.error && convRes.error.message && convRes.error.message.includes("lead_profiles")) {
+      convRes = await supabase.from("conversations").select("*").eq("id", id).single();
+    }
+
+    const msgRes = await supabase.from("messages").select("*").eq("conversation_id", id).order("created_at");
+
     if (convRes.error) return res.status(404).json({error:"Not found"});
     res.json({ conversation: convRes.data, messages: msgRes.data||[] });
   } catch(err) { res.status(500).json({error: err.message}); }
 });
 
-// ── POST /api/conversations/:id/reply  —  send a manual reply ─
+// ── POST /api/conversations/:id/reply  ────────────────────────
 router.post("/conversations/:id/reply", async (req, res) => {
   try {
     const { id } = req.params;
@@ -97,71 +122,91 @@ router.post("/conversations/:id/reply", async (req, res) => {
       .from("conversations").select("*").eq("id", id).single();
     if (!conv) return res.status(404).json({error:"Conversation not found"});
 
-    // Send via correct platform
     if (conv.platform === "whatsapp")  await sendWhatsApp(conv.user_id,  text);
     if (conv.platform === "instagram") await sendInstagram(conv.user_id, text);
     if (conv.platform === "messenger") await sendMessenger(conv.user_id, text);
-    // website: just log it — no send channel
 
-    // Log to DB
     await logMessage(id, "assistant", text);
-
     res.json({ ok:true, platform: conv.platform, to: conv.user_id });
   } catch(err) { res.status(500).json({error: err.message}); }
 });
 
-// ── GET /api/funnel  —  7-day funnel data ────────────────────
+// ── GET /api/funnel  —  ALL-TIME funnel (uses current stage) ──
 router.get("/funnel", async (req, res) => {
   try {
-    const since = new Date(Date.now() - 7*86400000).toISOString();
     const STAGES = ["initiated","qualifier","duration","discharge","reveal","insight","close","objection","payment_pending","converted"];
 
-    // Use funnel_events for accurate counts
-    const { data: events } = await supabase
-      .from("funnel_events").select("conversation_id, to_stage").gte("created_at", since);
+    // Try funnel_events first (more accurate journey tracking)
+    let { data: events } = await supabase
+      .from("funnel_events").select("conversation_id, to_stage");
 
-    // Fallback to conversations.stage
-    const { data: convs } = await supabase
-      .from("conversations").select("stage, converted_at").gte("created_at", since);
+    // Get all conversations
+    const { data: allConvs } = await supabase
+      .from("conversations").select("id, stage");
 
-    const maxStage = {};
+    const total = (allConvs||[]).length || 1;
+
+    let maxStage = {};
     if (events && events.length > 0) {
       events.forEach(e => {
         const cur = maxStage[e.conversation_id];
-        if (!cur || STAGES.indexOf(e.to_stage) > STAGES.indexOf(cur)) maxStage[e.conversation_id] = e.to_stage;
+        if (!cur || STAGES.indexOf(e.to_stage) > STAGES.indexOf(cur)) {
+          maxStage[e.conversation_id] = e.to_stage;
+        }
       });
     } else {
-      (convs||[]).forEach((c,i) => { maxStage[i] = c.stage; });
+      // Use current stage as proxy for highest stage reached
+      (allConvs||[]).forEach(c => { maxStage[c.id] = c.stage; });
     }
 
-    const total = (convs||[]).length || Object.keys(maxStage).length || 1;
+    // Count cumulative reach for each stage
     const reached = {};
     STAGES.forEach(s => reached[s] = 0);
     Object.values(maxStage).forEach(s => {
-      // everyone who reached stage X also reached all prior stages
       const idx = STAGES.indexOf(s);
-      for (let i=0; i<=idx; i++) reached[STAGES[i]]++;
+      if (idx < 0) return;
+      for (let i = 0; i <= idx; i++) reached[STAGES[i]]++;
     });
 
     const rows = STAGES.map(s => ({
       stage: s,
       count: reached[s] || 0,
-      pct:   total > 0 ? Math.round((reached[s]||0)/total*100) : 0,
+      pct:   total > 0 ? Math.round((reached[s]||0) / total * 100) : 0,
     }));
 
-    res.json({ total, rows, since });
+    res.json({ total, rows, since: "all-time" });
   } catch(err) { res.status(500).json({error: err.message}); }
 });
 
-// ── GET /api/insights  —  today + recent daily insights ──────
+// ── GET /api/insights  —  recent daily insights ──────────────
 router.get("/insights", async (req, res) => {
   try {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("daily_insights")
       .select("*")
       .order("report_date", { ascending:false })
       .limit(7);
+    if (error) return res.json([]);
     res.json(data || []);
+  } catch(err) { res.json([]); }
+});
+
+// ── GET /api/insights/trigger/:type  —  manual agent trigger ──
+router.get("/insights/trigger/:type", async (req, res) => {
+  try {
+    const { runFunnelAgent }      = require("../agents/funnel");
+    const { runInsightsAgent }    = require("../agents/insights");
+    const { runImprovementAgent } = require("../agents/improvement");
+    const agentMap = {
+      funnel:      runFunnelAgent,
+      insights:    runInsightsAgent,
+      improvement: runImprovementAgent,
+      followup:    async () => ({ ok: true, note: "Follow-up runs from scheduler" }),
+    };
+    const fn = agentMap[req.params.type];
+    if (!fn) return res.status(400).json({error:"Unknown agent"});
+    const result = await fn();
+    res.json({ ok:true, result });
   } catch(err) { res.status(500).json({error: err.message}); }
 });
 
@@ -175,6 +220,38 @@ router.post("/conversations/:id/mark-converted", async (req, res) => {
       .eq("id", id);
     res.json({ ok:true });
   } catch(err) { res.status(500).json({error: err.message}); }
+});
+
+// ── GET /api/agents  —  agent status overview ─────────────────
+router.get("/agents", async (req, res) => {
+  try {
+    const { data: latest } = await supabase
+      .from("daily_insights")
+      .select("report_date, conversion_rate, top_objections")
+      .order("report_date", { ascending:false })
+      .limit(1)
+      .single();
+
+    const { count: staleCount } = await supabase
+      .from("conversations")
+      .select("id", { count:"exact", head:true })
+      .lt("last_message_at", new Date(Date.now() - 24*3600000).toISOString())
+      .not("stage", "in", "(converted,payment_pending)");
+
+    res.json({
+      funnel:      { lastRun: latest?.report_date || null, schedule: "Daily 7am" },
+      insights:    { lastRun: latest?.report_date || null, schedule: "Daily 8am" },
+      followup:    { staleLeads: staleCount || 0, schedule: "Every 1hr" },
+      improvement: { schedule: "Weekly Sunday", lastInsight: latest?.top_objections?.[0] || null },
+    });
+  } catch(err) {
+    res.json({
+      funnel: { lastRun: null, schedule: "Daily 7am" },
+      insights: { lastRun: null, schedule: "Daily 8am" },
+      followup: { staleLeads: 0, schedule: "Every 1hr" },
+      improvement: { schedule: "Weekly Sunday" },
+    });
+  }
 });
 
 module.exports = router;
