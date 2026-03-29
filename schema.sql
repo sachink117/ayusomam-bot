@@ -1,4 +1,4 @@
-﻿-- ============================================================
+-- ============================================================
 -- Ayusomam Sinus Bot - Full Schema v2
 -- ============================================================
 
@@ -117,8 +117,8 @@ CREATE INDEX IF NOT EXISTS idx_follow_ups_scheduled          ON follow_ups(sched
 -- ============================================================
 -- Migration (run if tables already exist)
 -- ============================================================
--- ALTER TABLE conversations ADD COLUMN IF NOT EXISTS name TEXT;
--- ALTER TABLE conversations ADD COLUMN IF NOT EXISTS name_source TEXT;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS name TEXT;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS name_source TEXT;
 -- ALTER TABLE buyers       ADD COLUMN IF NOT EXISTS name TEXT;
 -- CREATE TABLE IF NOT EXISTS lead_profiles (...);  (see above)
 -- CREATE TABLE IF NOT EXISTS funnel_events (...);
