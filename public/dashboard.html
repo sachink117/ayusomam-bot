@@ -194,7 +194,197 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .toast.success{border-color:var(--green)}
 .toast.error{border-color:var(--red)}
 
-/* ══ SYSTEM TAB CSS ══ */
+/* ══ VIS SYSTEM TAB CSS ══ */
+
+
+
+.vis-frame :root{
+  --bg:#050a14;--surface:#0d1526;--card:#111f35;--border:#1a3050;
+  --text:#e2e8f0;--muted:#4a6080;--purple:#7c3aed;--purple-light:#a78bfa;
+  --green:#10b981;--green-light:#34d399;--amber:#f59e0b;--red:#ef4444;
+  --blue:#3b82f6;--cyan:#06b6d4;--wa:#25D366;--ig:#E1306C;--fb:#0866FF;
+}
+
+.vis-frame html, .vis-frame body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif}
+
+
+
+.vis-frame .topbar{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;position:relative;z-index:10}
+
+.vis-frame .logo{font-size:.95rem;font-weight:700;color:var(--purple-light);display:flex;align-items:center;gap:8px}
+
+.vis-frame .live-pill{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--green-light);background:#05291611;border:1px solid var(--green);padding:3px 10px;border-radius:999px}
+
+.vis-frame .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);animation:visLivebeat 1.4s ease-in-out infinite}
+
+@keyframes visLivebeat{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+
+.vis-frame .clock{font-size:.72rem;color:var(--muted);font-family:monospace}
+
+
+
+.vis-frame .main{height:calc(100vh - 48px);display:grid;grid-template-columns:1fr 320px;grid-template-rows:1fr auto;gap:0}
+
+
+
+.vis-frame .canvas-section{position:relative;overflow:hidden;grid-row:1/3}
+
+.vis-frame #bgCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.4}
+
+.vis-frame .nodes-layer{position:absolute;inset:0;pointer-events:none}
+
+.vis-frame svg#flowSvg{position:absolute;inset:0;width:100%;height:100%}
+
+
+
+.vis-frame .node{position:absolute;transform:translate(-50%,-50%);text-align:center;pointer-events:all;cursor:default;transition:transform .2s}
+
+.vis-frame .node:hover{transform:translate(-50%,-50%) scale(1.08)}
+
+.vis-frame .node-ring{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;border:2px solid;position:relative;margin:0 auto 6px;transition:all .3s}
+
+.vis-frame .node-ring::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid;opacity:.3;animation:visRingpulse 2.5s ease-in-out infinite}
+
+@keyframes visRingpulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.15);opacity:.05}}
+
+.vis-frame .node-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap}
+
+.vis-frame .node-sub{font-size:.58rem;color:var(--muted);margin-top:2px;white-space:nowrap}
+
+.vis-frame .node-count{position:absolute;top:-4px;right:-4px;background:var(--purple);color:#fff;font-size:.55rem;font-weight:700;padding:2px 5px;border-radius:999px;min-width:18px;text-align:center}
+
+
+
+.vis-frame .n-platform .node-ring{background:#051a0a;border-color:var(--green);color:var(--green-light)}
+
+.vis-frame .n-platform .node-ring::after{border-color:var(--green)}
+
+.vis-frame .n-bot .node-ring{background:#150a30;border-color:var(--purple);color:var(--purple-light)}
+
+.vis-frame .n-bot .node-ring::after{border-color:var(--purple)}
+
+.vis-frame .n-db .node-ring{background:#0a1a2e;border-color:var(--blue);color:var(--blue)}
+
+.vis-frame .n-db .node-ring::after{border-color:var(--blue)}
+
+.vis-frame .n-agent .node-ring{background:#0a1a14;border-color:var(--cyan);color:var(--cyan)}
+
+.vis-frame .n-agent .node-ring::after{border-color:var(--cyan)}
+
+.vis-frame .n-agent.active .node-ring{border-color:var(--green-light);color:var(--green-light);box-shadow:0 0 20px #34d39933}
+
+.vis-frame .n-agent.active .node-ring::after{border-color:var(--green-light)}
+
+.vis-frame .n-you .node-ring{background:#1a0a14;border-color:var(--amber);color:var(--amber)}
+
+.vis-frame .n-you .node-ring::after{border-color:var(--amber)}
+
+
+
+.vis-frame .right-panel{grid-row:1/3;border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+
+
+
+.vis-frame .panel-section{padding:14px 16px;border-bottom:1px solid var(--border)}
+
+.vis-frame .sec-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--purple-light);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+
+.vis-frame .sec-title .dot{width:6px;height:6px;border-radius:50%;background:var(--purple-light);animation:visLivebeat 2s ease-in-out infinite}
+
+
+.vis-frame .funnel-row{display:flex;align-items:center;gap:8px;margin:4px 0}
+
+.vis-frame .f-lbl{width:90px;font-size:.63rem;color:var(--muted);text-align:right;flex-shrink:0}
+
+.vis-frame .f-track{flex:1;height:16px;background:#0a1525;border-radius:999px;overflow:hidden;position:relative}
+
+.vis-frame .f-fill{height:100%;border-radius:999px;display:flex;align-items:center;padding-left:6px;font-size:.58rem;font-weight:700;color:#ffffffcc;white-space:nowrap;transition:width 1.4s cubic-bezier(.16,1,.3,1)}
+
+.vis-frame .f-num{width:30px;text-align:right;font-size:.62rem;color:var(--muted);flex-shrink:0}
+
+.vis-frame .f-drop{font-size:.55rem;color:var(--red);margin-left:2px}
+
+
+
+.vis-frame .agent-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #0f1e30}
+
+.vis-frame .agent-row:last-child{border-bottom:none}
+
+.vis-frame .a-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+.vis-frame .a-dot.on{background:var(--green-light);box-shadow:0 0 8px var(--green-light)}
+
+.vis-frame .a-dot.idle{background:var(--muted)}
+
+.vis-frame .a-dot.running{background:var(--amber);animation:visLivebeat .8s ease-in-out infinite}
+
+.vis-frame .a-info{flex:1;min-width:0}
+
+.vis-frame .a-name{font-size:.72rem;font-weight:600}
+
+.vis-frame .a-next{font-size:.6rem;color:var(--muted);margin-top:1px}
+
+.vis-frame .a-trigger{font-size:.6rem;padding:2px 7px;border-radius:4px;background:#0a1525;border:1px solid var(--border);color:var(--muted);cursor:pointer;flex-shrink:0;transition:all .15s}
+
+.vis-frame .a-trigger:hover{border-color:var(--purple);color:var(--purple-light)}
+
+
+
+.vis-frame .loop-nodes{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+
+.vis-frame .loop-node{padding:4px 8px;border-radius:999px;font-size:.6rem;font-weight:600;border:1px solid var(--border);background:var(--surface);white-space:nowrap}
+
+.vis-frame .loop-arrow{font-size:.8rem;color:var(--purple);flex-shrink:0}
+
+
+
+.vis-frame .activity-feed{flex:1;overflow-y:auto;padding:0}
+
+.vis-frame .act-item{display:flex;gap:8px;padding:8px 16px;border-bottom:1px solid #0a1525;font-size:.65rem;animation:visFadeSlide .4s ease-out}
+
+@keyframes visFadeSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+.vis-frame .act-time{color:var(--muted);flex-shrink:0;font-family:monospace;font-size:.6rem;margin-top:1px}
+
+.vis-frame .act-tag{padding:1px 5px;border-radius:3px;font-size:.58rem;font-weight:700;flex-shrink:0}
+
+.vis-frame .tag-bot{background:#1a0a3022;color:var(--purple-light);border:1px solid var(--purple)44}
+
+.vis-frame .tag-wa{background:#05291611;color:var(--wa);border:1px solid var(--wa)44}
+
+.vis-frame .tag-ig{background:#2a051511;color:var(--ig);border:1px solid var(--ig)44}
+
+.vis-frame .tag-fb{background:#051022;color:var(--fb);border:1px solid var(--fb)44}
+
+.vis-frame .tag-agent{background:#0a1a1422;color:var(--cyan);border:1px solid var(--cyan)44}
+
+.vis-frame .tag-pay{background:#05291611;color:var(--green-light);border:1px solid var(--green)44}
+
+.vis-frame .act-text{flex:1;color:var(--text);line-height:1.4}
+
+
+
+.vis-frame .stat-bar{display:flex;gap:0;background:var(--surface);border-top:1px solid var(--border);padding:10px 20px;gap:20px}
+
+.vis-frame .stat-pill{display:flex;flex-direction:column;gap:2px}
+
+.vis-frame .sp-val{font-size:1.3rem;font-weight:700;line-height:1}
+
+.vis-frame .sp-lbl{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+
+
+.vis-frame .particle{position:absolute;pointer-events:none;border-radius:50%;animation:visParticleMove linear forwards}
+
+@keyframes visParticleMove{to{offset-distance:100%;opacity:0}}
+
+
+
+.vis-frame ::-webkit-scrollbar{width:3px}
+.vis-frame ::-webkit-scrollbar-track{background:transparent}
+.vis-frame ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ══ OLD SYSTEM CSS ══ */
 
   
   
@@ -492,7 +682,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="tab" data-tab="conversations">💬 Conversations</div>
   <div class="tab" data-tab="leads">👤 Lead Profiles</div>
   <div class="tab" data-tab="insights">🧠 Insights</div>
-  <div class="tab" data-tab="system">🏗️ System</div>
+  <div class="tab" data-tab="system">🔮 Live System</div>
 </div>
 
 <!-- CONTENT -->
@@ -594,88 +784,82 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 
 
-  <!-- ══ SYSTEM TAB ══ -->
+  <!-- ══ VIS SYSTEM TAB ══ -->
   <div class="tab-panel" id="panel-system">
-    <div class="sys-view" style="overflow-y:auto;width:100%;padding:20px 0 40px">
-<h1>🌿 Ayusomam — Full System Architecture</h1>
-<p class="subtitle">Lead journey · Data capture · Funnel intelligence · Self-evolving agents</p>
-
-<!-- ══════════════════════════════════ 1. PLATFORMS ══════════════════════════════════ -->
-<p class="section-label">① Entry Points</p>
-<div class="platforms">
-  <div class="platform-card" style="animation-delay:.0s"><span class="dot" style="background:#25D366"></span>WhatsApp</div>
-  <div class="platform-card" style="animation-delay:.1s"><span class="dot" style="background:#E1306C"></span>Instagram DM</div>
-  <div class="platform-card" style="animation-delay:.2s"><span class="dot" style="background:#0866FF"></span>Messenger</div>
-  <div class="platform-card" style="animation-delay:.3s"><span class="dot" style="background:#94a3b8"></span>Website Chat</div>
-</div>
-
-<div class="connector"><div class="connector-line"></div></div>
-<div class="connector"><div class="connector-dot"></div></div>
-
-<!-- ══════════════════════════════════ 2. STAGE PIPELINE ══════════════════════════════════ -->
-<p class="section-label">② Conversation Stage Pipeline</p>
-<div class="pipeline" id="sys-pipeline">
-  <div class="stage-box s-initiated" style="animation-delay:.0s">
-    <div class="label">Stage 1</div>
-    <div class="name">Initiated</div>
-    <div class="data-badge">name · platform</div>
-  </div>
-  <div class="arrow">›</div>
-  <div class="stage-box s-qualifier" style="animation-delay:.05s">
-    <div class="label">Stage 2</div>
-    <div class="name">Qualifier</div>
-    <div class="data-badge">main symptom</div>
-  </div>
-  <div class="arrow">›</div>
-  <div class="stage-box s-duration" style="animation-delay:.1s">
-    <div class="label">Stage 3</div>
-    <div class="name">Duration</div>
-    <div class="data-badge">weeks / months</div>
-  </div>
-  <div class="arrow">›</div>
-  <div class="stage-box s-discharge" style="animation-delay:.15s">
-    <div class="label">Stage 4</div>
-    <div class="name">Discharge</div>
-    <div class="data-badge">type · colour</div>
-  </div>
-  <div class="arrow">›</div>
-  <div class="stage-box s-reveal" style="animation-delay:.2s">
-    <div class="label">Stage 5</div>
-    <div class="name">Reveal</div>
-    <div class="data-badge">sinus type set</div>
-  </div>
-  <div class="arrow">›</div>
-  <div class="stage-box s-insight" style="animation-delay:.25s">
-    <div class="label">Stage 6</div>
-    <div class="name">Insight</div>
-    <div class="data-badge">Ayurvedic hook</div>
-  </div>
-  <div class="arrow">›</div>
-  <div class="stage-box s-close" style="animation-delay:.3s">
-    <div class="label">Stage 7</div>
-    <div class="name">Close</div>
-    <div class="data-badge">plan + link sent</div>
-  </div>
-  <div class="arrow">⇄</div>
-  <div class="stage-box s-objection" style="animation-delay:.35s">
-    <div class="label">Stage 8</div>
-    <div class="name">Objection</div>
-    <div class="data-badge">objection type</div>
-  </div>
-  <div class="arrow">›</div>
-  <div class="stage-box s-payment" style="animation-delay:.4s">
-    <div class="label">Stage 9</div>
-    <div class="name">Pmt Pending</div>
-    <div class="data-badge">method · screenshot</div>
-  </div>
-  <div class="arrow">›</div>
-  <div class="stage-box s-converted" style="animation-delay:.45s">
-    <div class="active-dot"></div>
-    <div class="label">Stage 10</div>
-    <div class="name">✓ Converted</div>
-    <div class="data-badge">plan · amount · onboarding</div>
+    <div class="vis-frame" style="height:100%;width:100%;display:flex;flex-direction:column;overflow:hidden;background:#050a14">
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo"><span>🌿</span> Ayusomam — Live System Intelligence</div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <div class="live-pill"><div class="live-dot"></div>LIVE</div>
+    <div class="clock" id="clock">--:--:--</div>
   </div>
 </div>
+
+<!-- MAIN GRID -->
+<div class="main">
+
+  <!-- ── CANVAS / FLOW MAP ── -->
+  <div class="canvas-section" id="canvasSection">
+    <canvas id="bgCanvas"></canvas>
+    <svg id="flowSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="nodes-layer" id="nodesLayer"></div>
+  </div>
+
+  <!-- ── RIGHT PANEL ── -->
+  <div class="right-panel">
+
+    <!-- Funnel -->
+    <div class="panel-section">
+      <div class="sec-title"><div class="dot"></div>Live Funnel</div>
+      <div id="funnelRows">
+        <div style="color:var(--muted);font-size:.7rem;padding:4px">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Agents -->
+    <div class="panel-section">
+      <div class="sec-title"><div class="dot"></div>Agents</div>
+      <div id="agentRows">
+        <div class="agent-row"><div class="a-dot idle"></div><div class="a-info"><div class="a-name">📊 Funnel Agent</div><div class="a-next">Daily @ 7am</div></div><button class="a-trigger" onclick="triggerAgent('funnel')">▶ Run</button></div>
+        <div class="agent-row"><div class="a-dot idle"></div><div class="a-info"><div class="a-name">🔬 Insights Agent</div><div class="a-next">Daily @ 8am</div></div><button class="a-trigger" onclick="triggerAgent('insights')">▶ Run</button></div>
+        <div class="agent-row"><div class="a-dot idle"></div><div class="a-info"><div class="a-name">🔁 Follow-up Agent</div><div class="a-next">Every 1hr</div></div><button class="a-trigger" onclick="triggerAgent('followup')">▶ Run</button></div>
+        <div class="agent-row"><div class="a-dot idle"></div><div class="a-info"><div class="a-name">🧠 Improvement Agent</div><div class="a-next">Weekly</div></div><button class="a-trigger" onclick="triggerAgent('improvement')">▶ Run</button></div>
+      </div>
+    </div>
+
+    <!-- Self-Evolve Loop -->
+    <div class="panel-section">
+      <div class="sec-title"><div class="dot"></div>Self-Evolving Loop</div>
+      <div class="loop-nodes">
+        <div class="loop-node" style="border-color:#1d4ed8;color:#93c5fd">📩 Lead</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node" style="border-color:#7c3aed;color:#c4b5fd">🤖 Bot</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node" style="border-color:#065f46;color:#6ee7b7">💾 Data</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node" style="border-color:#b45309;color:#fcd34d">📊 Analyse</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node" style="border-color:#9f1239;color:#fda4af">💡 Insight</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node" style="border-color:#1d4ed8;color:#93c5fd">🔧 Improve</div>
+        <div class="loop-arrow">↩</div>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="sec-title" style="padding:12px 16px 4px;border-bottom:none">
+      <div class="dot"></div>Live Activity
+    </div>
+    <div class="activity-feed" id="activityFeed">
+      <div class="act-item"><span class="act-time">--:--</span><span class="act-tag tag-bot">BOT</span><span class="act-text">Connecting to API…</span></div>
+    </div>
+
+  </div><!-- /right-panel -->
+
+</div><!-- /main -->
+    </div>
+  </div>
 
 <div class="connector"><div class="connector-line"></div></div>
 
@@ -973,7 +1157,7 @@ function initials(name) {
 // ─────────────────────────────────────────────
 document.querySelectorAll('.tab').forEach(t => {
   t.addEventListener('click', () => {
-    if (t.dataset.tab === 'system') setTimeout(initSystemTab, 50);
+    if (t.dataset.tab === 'system') setTimeout(initVisTab, 50);
     document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
@@ -1372,35 +1556,6 @@ async function fullRefresh() {
 fullRefresh();
 setInterval(fullRefresh, 30000); // refresh every 30s
 
-
-// ─── SYSTEM TAB INIT ───
-let sysTabInitialized = false;
-function initSystemTab() {
-  if (sysTabInitialized) return;
-  sysTabInitialized = true;
-
-// ── Animate funnel bars ──
-const bars = [
-  {id:'sys-fb0', w:100}, {id:'sys-fb1', w:82}, {id:'sys-fb2', w:71}, {id:'sys-fb3', w:64},
-  {id:'sys-fb4', w:58},  {id:'sys-fb5', w:41}, {id:'sys-fb6', w:18}, {id:'sys-fb7', w:14},
-];
-setTimeout(() => {
-  bars.forEach((b,i) => setTimeout(() => {
-    const el = document.getElementById(b.id);
-    if (el) el.style.width = b.w + '%';
-  }, i * 120));
-}, 500);
-
-// ── Animate active dot through stages ──
-const stageIds = ['s-initiated','s-qualifier','s-duration','s-discharge','s-reveal','s-insight','s-close','s-objection','s-payment','s-converted'];
-let stageIdx = 0;
-const pipelineBoxes = document.querySelectorAll('#sys-pipeline .stage-box');
-function moveActiveDot() {
-  pipelineBoxes.forEach(b => { const d = b.querySelector('.active-dot'); if(d) d.remove(); });
-  const box = pipelineBoxes[stageIdx];
-  if (box) { const dot = document.createElement('div'); dot.className='active-dot'; box.appendChild(dot); }
-  stageIdx = (stageIdx + 1) % pipelineBoxes.length;
-}
 moveActiveDot();
 setInterval(moveActiveDot, 1800);
 
@@ -1459,6 +1614,370 @@ function nextLog() {
 nextLog();
 setInterval(nextLog, 2800);
 
+}
+
+
+
+// ─── VIS SYSTEM TAB INIT ───
+let visTabInitialized = false;
+function initVisTab() {
+  if (visTabInitialized) return;
+  visTabInitialized = true;
+  (function() {
+
+// ═══════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════
+const BASE = window.location.origin;
+const COLORS = ['#1d4ed8','#2563eb','#2563eb','#7c3aed','#6d28d9','#5b21b6','#d97706','#92400e','#065f46','#059669'];
+
+// ═══════════════════════════════════════════
+// CLOCK
+// ═══════════════════════════════════════════
+function updateClock() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+updateClock(); setInterval(updateClock, 1000);
+
+// ═══════════════════════════════════════════
+// BACKGROUND CANVAS — star field
+// ═══════════════════════════════════════════
+(function initBg() {
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    stars = Array.from({length:80}, () => ({
+      x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+      r: Math.random()*1.5+.3, a: Math.random(), da: (Math.random()-.5)*.01
+    }));
+  }
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s => {
+      s.a = Math.max(0.1, Math.min(0.8, s.a+s.da));
+      if (s.a <= 0.1 || s.a >= 0.8) s.da *= -1;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(100,140,200,${s.a})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  new ResizeObserver(resize).observe(canvas); resize(); draw();
+})();
+
+// ═══════════════════════════════════════════
+// NODE TOPOLOGY
+// ═══════════════════════════════════════════
+// Positions as % of canvas dimensions
+const NODES = [
+  { id:'wa',  label:'WhatsApp', sub:'Entry', icon:'💬', cls:'n-platform', xp:.18, yp:.12 },
+  { id:'ig',  label:'Instagram', sub:'Entry', icon:'📸', cls:'n-platform', xp:.38, yp:.12 },
+  { id:'fb',  label:'Messenger', sub:'Entry', icon:'💙', cls:'n-platform', xp:.58, yp:.12 },
+  { id:'web', label:'Website', sub:'Entry', icon:'🌐', cls:'n-platform', xp:.78, yp:.12 },
+  { id:'bot', label:'Bot Engine', sub:'Claude AI', icon:'🤖', cls:'n-bot', xp:.48, yp:.32 },
+  { id:'db',  label:'Supabase', sub:'Postgres', icon:'🗄️', cls:'n-db', xp:.48, yp:.52 },
+  { id:'fa',  label:'Funnel', sub:'Daily 7am', icon:'📊', cls:'n-agent', xp:.18, yp:.72 },
+  { id:'ia',  label:'Insights', sub:'Daily 8am', icon:'🔬', cls:'n-agent', xp:.35, yp:.72 },
+  { id:'fu',  label:'Follow-up', sub:'Every 1hr', icon:'🔁', cls:'n-agent', xp:.61, yp:.72 },
+  { id:'im',  label:'Improve', sub:'Weekly', icon:'🧠', cls:'n-agent', xp:.78, yp:.72 },
+  { id:'you', label:'Dashboard', sub:'You', icon:'📡', cls:'n-you', xp:.48, yp:.90 },
+];
+
+const EDGES = [
+  {from:'wa',to:'bot',color:'#25D366'},{from:'ig',to:'bot',color:'#E1306C'},
+  {from:'fb',to:'bot',color:'#0866FF'},{from:'web',to:'bot',color:'#64748b'},
+  {from:'bot',to:'db',color:'#7c3aed',thick:true},
+  {from:'db',to:'fa',color:'#06b6d4'},{from:'db',to:'ia',color:'#06b6d4'},
+  {from:'db',to:'fu',color:'#06b6d4'},{from:'db',to:'im',color:'#06b6d4'},
+  {from:'fa',to:'you',color:'#10b981'},{from:'ia',to:'you',color:'#10b981'},
+  {from:'fu',to:'bot',color:'#f59e0b',dash:true},{from:'im',to:'bot',color:'#f59e0b',dash:true},
+];
+
+let nodeEls = {};
+let nodePx = {}; // pixel positions
+let svgPaths = {};
+
+function buildNodes() {
+  const layer = document.getElementById('nodesLayer');
+  const svg = document.getElementById('flowSvg');
+  const w = layer.offsetWidth, h = layer.offsetHeight;
+
+  // Compute pixel positions
+  NODES.forEach(n => {
+    nodePx[n.id] = { x: n.xp * w, y: n.yp * h };
+  });
+
+  // Draw SVG edges
+  svg.innerHTML = '';
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  // Glow filter
+  defs.innerHTML = `<filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>`;
+  svg.appendChild(defs);
+
+  EDGES.forEach(e => {
+    const p0 = nodePx[e.from], p1 = nodePx[e.to];
+    // Bezier control point
+    const cx = (p0.x+p1.x)/2, cy = (p0.y+p1.y)/2 - 20;
+    const d = `M${p0.x},${p0.y} Q${cx},${cy} ${p1.x},${p1.y}`;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke', e.color+'44');
+    path.setAttribute('stroke-width', e.thick ? '2.5' : '1.5');
+    if (e.dash) path.setAttribute('stroke-dasharray','5,4');
+    svg.appendChild(path);
+
+    // Animated particle path (lighter color)
+    const animPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+    animPath.setAttribute('d', d);
+    animPath.setAttribute('fill','none');
+    animPath.setAttribute('stroke', 'none');
+    animPath.id = `path-${e.from}-${e.to}`;
+    svg.appendChild(animPath);
+    svgPaths[`${e.from}-${e.to}`] = {path: animPath, color: e.color, d};
+  });
+
+  // Build node HTML
+  layer.innerHTML = '';
+  NODES.forEach(n => {
+    const px = nodePx[n.id];
+    const div = document.createElement('div');
+    div.className = `node ${n.cls}`;
+    div.id = `node-${n.id}`;
+    div.style.left = px.x+'px';
+    div.style.top = px.y+'px';
+    div.innerHTML = `
+      <div class="node-ring">${n.icon}<div class="node-count" id="cnt-${n.id}" style="display:none">0</div></div>
+      <div class="node-label">${n.label}</div>
+      <div class="node-sub">${n.sub}</div>`;
+    layer.appendChild(div);
+    nodeEls[n.id] = div;
+  });
+}
+
+// ═══════════════════════════════════════════
+// ANIMATED PARTICLES along SVG paths
+// ═══════════════════════════════════════════
+function spawnParticle(fromId, toId, color) {
+  const key = `${fromId}-${toId}`;
+  const pathInfo = svgPaths[key];
+  if (!pathInfo) return;
+
+  const svg = document.getElementById('flowSvg');
+  const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  circle.setAttribute('r','4');
+  circle.setAttribute('fill', color || pathInfo.color);
+  circle.setAttribute('filter','url(#glow)');
+  const totalLen = pathInfo.path.getTotalLength ? pathInfo.path.getTotalLength() : 100;
+
+  // Use animateMotion
+  const anim = document.createElementNS('http://www.w3.org/2000/svg','animateMotion');
+  anim.setAttribute('dur','1.2s');
+  anim.setAttribute('repeatCount','1');
+  anim.setAttribute('fill','freeze');
+  const mpath = document.createElementNS('http://www.w3.org/2000/svg','mpath');
+  mpath.setAttributeNS('http://www.w3.org/1999/xlink','href',`#path-${fromId}-${toId}`);
+  anim.appendChild(mpath);
+  circle.appendChild(anim);
+  svg.appendChild(circle);
+
+  // Also animate opacity
+  const opAnim = document.createElementNS('http://www.w3.org/2000/svg','animate');
+  opAnim.setAttribute('attributeName','opacity');
+  opAnim.setAttribute('values','0;1;1;0');
+  opAnim.setAttribute('dur','1.2s');
+  opAnim.setAttribute('repeatCount','1');
+  circle.appendChild(opAnim);
+
+  setTimeout(() => circle.remove(), 1300);
+}
+
+// ═══════════════════════════════════════════
+// SIMULATE LIVE TRAFFIC (fallback when API is quiet)
+// ═══════════════════════════════════════════
+const PLATFORMS = ['wa','ig','fb','web'];
+const AGENTS = ['fa','ia','fu','im'];
+let trafficInterval = null;
+
+function startTraffic() {
+  if (trafficInterval) return;
+  trafficInterval = setInterval(() => {
+    // Random platform → bot
+    const plat = PLATFORMS[Math.floor(Math.random()*PLATFORMS.length)];
+    const colors = {wa:'#25D366',ig:'#E1306C',fb:'#0866FF',web:'#64748b'};
+    spawnParticle(plat, 'bot', colors[plat]);
+
+    setTimeout(() => {
+      spawnParticle('bot','db','#7c3aed');
+      setTimeout(() => {
+        // Random agent gets data
+        const ag = AGENTS[Math.floor(Math.random()*AGENTS.length)];
+        spawnParticle('db', ag, '#06b6d4');
+        setTimeout(() => {
+          if (ag === 'fa' || ag === 'ia') spawnParticle(ag,'you','#10b981');
+          if (ag === 'fu' || ag === 'im') spawnParticle(ag,'bot','#f59e0b');
+        }, 800);
+      }, 600);
+    }, 500);
+  }, 2200);
+}
+
+// ═══════════════════════════════════════════
+// NODE PULSE (highlight on activity)
+// ═══════════════════════════════════════════
+function pulseNode(id) {
+  const el = nodeEls[id];
+  if (!el) return;
+  el.style.filter = 'brightness(1.6)';
+  setTimeout(() => el.style.filter = '', 600);
+}
+
+// ═══════════════════════════════════════════
+// API FETCH
+// ═══════════════════════════════════════════
+async function apiFetch(path) {
+  const r = await fetch(BASE+'/api'+path,{headers:{'Content-Type':'application/json'}});
+  if (!r.ok) throw new Error(`${r.status}`);
+  return r.json();
+}
+
+// ═══════════════════════════════════════════
+// FUNNEL
+// ═══════════════════════════════════════════
+async function loadFunnel() {
+  try {
+    const d = await apiFetch('/funnel');
+    let html = '';
+    d.rows.forEach((r,i) => {
+      const prev = i>0 ? d.rows[i-1].pct : 100;
+      const drop = (prev>0 && r.pct<prev) ? `<span class="f-drop">▼${prev-r.pct}%</span>` : '';
+      const isLeak = (prev-r.pct)>=15 ? 'box-shadow:0 0 0 2px #ef444455 inset;' : '';
+      html += `<div class="funnel-row">
+        <div class="f-lbl">${r.stage.replace(/_/g,' ')}</div>
+        <div class="f-track" style="${isLeak}">
+          <div class="f-fill" id="ff${i}" style="width:0%;background:${COLORS[i]||'#7c3aed'}">
+            ${r.pct}%${drop}
+          </div>
+        </div>
+        <div class="f-num">${r.count}</div>
+      </div>`;
+    });
+    document.getElementById('funnelRows').innerHTML = html;
+    // Update node counts
+    const cnt = document.getElementById('cnt-db');
+    if (cnt && d.total) { cnt.style.display=''; cnt.textContent=d.total; }
+    setTimeout(() => d.rows.forEach((r,i) => {
+      const el = document.getElementById('ff'+i);
+      if (el) el.style.width = Math.max(r.pct,3)+'%';
+    }), 100);
+    pulseNode('db');
+  } catch(e) {
+    document.getElementById('funnelRows').innerHTML = `<div style="color:var(--muted);font-size:.65rem;padding:4px">No funnel data — run Funnel Agent</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════
+// STATS (node counts)
+// ═══════════════════════════════════════════
+async function loadStats() {
+  try {
+    const d = await apiFetch('/stats');
+    const botCnt = document.getElementById('cnt-bot');
+    if (botCnt) { botCnt.style.display=''; botCnt.textContent=d.today||0; }
+    const youCnt = document.getElementById('cnt-you');
+    if (youCnt && d.converted) { youCnt.style.display=''; youCnt.textContent='✓'+d.converted; }
+    // Update agent "last run" from insights
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════════
+// LIVE ACTIVITY FEED
+// ═══════════════════════════════════════════
+const FAKE_LOGS = [
+  {tag:'wa',cls:'tag-wa',text:'Rahul (9876..): "naak band rehti hai" → initiated',from:'wa'},
+  {tag:'BOT',cls:'tag-bot',text:'Language: hinglish · Stage → qualifier',from:'bot'},
+  {tag:'BOT',cls:'tag-bot',text:'Name detected: "Priya" · Saved to Supabase',from:'bot'},
+  {tag:'ig',cls:'tag-ig',text:'Priya Mehta: "thick discharge" → duration',from:'ig'},
+  {tag:'BOT',cls:'tag-bot',text:'Sinus type: pitta_inflammatory · Plan: core_1299',from:'bot'},
+  {tag:'AGENT',cls:'tag-agent',text:'FunnelAgent ran @ 07:00 · Leak: Reveal→Close 17%',from:'fa'},
+  {tag:'AGENT',cls:'tag-agent',text:'InsightsAgent: top objection "sochenge" (34×)',from:'ia'},
+  {tag:'AGENT',cls:'tag-agent',text:'FollowupAgent: sent to 3 stale leads',from:'fu'},
+  {tag:'fb',cls:'tag-fb',text:'Deepak Nair: message received → qualifier',from:'fb'},
+  {tag:'💰',cls:'tag-pay',text:'Anjali Patel confirmed payment → converted ✓',from:'db'},
+  {tag:'BOT',cls:'tag-bot',text:'Improvement: added bridge msg Insight→Close',from:'im'},
+];
+let logIdx = 0;
+function addActivity(item) {
+  const feed = document.getElementById('activityFeed');
+  const now = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const div = document.createElement('div');
+  div.className = 'act-item';
+  div.innerHTML = `<span class="act-time">${now}</span><span class="act-tag ${item.cls}">${item.tag}</span><span class="act-text">${item.text}</span>`;
+  feed.insertBefore(div, feed.firstChild);
+  if (feed.children.length > 30) feed.lastChild.remove();
+  if (item.from) { pulseNode(item.from); spawnParticle(item.from, item.from==='wa'||item.from==='ig'||item.from==='fb'||item.from==='web'?'bot':'db', null); }
+}
+
+function tickLog() {
+  addActivity(FAKE_LOGS[logIdx % FAKE_LOGS.length]);
+  logIdx++;
+}
+setInterval(tickLog, 3500);
+
+// ═══════════════════════════════════════════
+// AGENT TRIGGER
+// ═══════════════════════════════════════════
+async function triggerAgent(type) {
+  const agMap = {funnel:'fa',insights:'ia',followup:'fu',improvement:'im'};
+  const nodeId = agMap[type];
+  // Animate node as running
+  const el = nodeEls[nodeId];
+  if (el) el.querySelector('.node-ring').style.boxShadow = '0 0 30px #f59e0b88';
+  addActivity({tag:'AGENT',cls:'tag-agent',text:`${type} agent triggered manually…`,from:nodeId});
+  spawnParticle('db', nodeId, '#f59e0b');
+  try {
+    await apiFetch(`/insights/trigger/${type}`);
+    addActivity({tag:'AGENT',cls:'tag-agent',text:`${type} agent completed ✓`,from:nodeId});
+    spawnParticle(nodeId, 'you', '#10b981');
+    if (el) el.querySelector('.node-ring').style.boxShadow = '0 0 20px #34d39933';
+    setTimeout(() => { if(el) el.querySelector('.node-ring').style.boxShadow=''; }, 3000);
+    loadFunnel();
+  } catch(e) {
+    addActivity({tag:'BOT',cls:'tag-bot',text:`${type} agent error: ${e.message}`});
+    if (el) el.querySelector('.node-ring').style.boxShadow='';
+  }
+}
+
+// ═══════════════════════════════════════════
+// INIT + REFRESH
+// ═══════════════════════════════════════════
+function init() {
+  buildNodes();
+  startTraffic();
+  loadFunnel();
+  loadStats();
+  // Start with a few log entries
+  setTimeout(tickLog, 800);
+  setTimeout(tickLog, 1800);
+  setTimeout(tickLog, 2800);
+}
+
+// Rebuild on resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { buildNodes(); }, 200);
+});
+
+// Refresh data every 30s
+setInterval(() => { loadFunnel(); loadStats(); }, 30000);
+
+// Wait for layout then init
+requestAnimationFrame(() => { requestAnimationFrame(init); });
+
+  })();
 }
 
 </script>
