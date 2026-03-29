@@ -33,6 +33,17 @@ app.use(express.urlencoded({ extended: true }));
 // ---- Health check ----
 app.get("/", (req, res) => res.json({ status: "ok", service: "Ayusomam Sinus Bot v3", ts: new Date() }));
 
+// ---- Dashboard & API ----
+const apiRouter = require("./src/routes/api");
+app.use("/api", apiRouter);
+
+// Serve dashboard HTML
+const path = require("path");
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "dashboard.html"));
+});
+app.use(express.static(path.join(__dirname, "public")));
+
 // ---- Platform Routes ----
 app.use("/whatsapp", waRouter);
 app.use("/instagram", igRouter);
@@ -177,3 +188,4 @@ app.listen(PORT, () => {
   setTimeout(runFollowUps, 5000);
   setTimeout(runThankYous, 5000);
 });
+
