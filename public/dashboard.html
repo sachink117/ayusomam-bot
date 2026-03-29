@@ -758,19 +758,32 @@ function renderStageGroups(convs){
 
 function renderLeadCard(c){
   const pc=c.platform==='instagram'?'ig':c.platform==='messenger'?'fb':'wa';
-  const name=c.name||(c.user_id?c.user_id.slice(0,14)+'…':'Unknown');
+  const platLabel=c.platform==='instagram'?'Instagram':c.platform==='messenger'?'Messenger':'WhatsApp';
+  // Build a human-readable fallback name when name is null
+  let name = c.name;
+  if(!name){
+    if(c.platform==='whatsapp' && c.user_id){
+      // user_id is a phone number — show last 10 digits formatted
+      const digits = c.user_id.replace(/\D/g,'');
+      name = '+' + (digits.length>10 ? digits.slice(-10) : digits);
+    } else if(c.user_id){
+      name = platLabel + ' #' + c.user_id.slice(-6);
+    } else {
+      name = platLabel + ' User';
+    }
+  }
   const initial=name[0]?.toUpperCase()||'?';
   const time=c.last_message_at?relTime(c.last_message_at):'';
-  const platLabel=c.platform==='instagram'?'Instagram':c.platform==='messenger'?'Messenger':'WhatsApp';
+  const preview=c.last_message||c.last_message_preview||'Tap to view conversation';
   return`<div class="lead-card" id="lc-${c.id}" onclick="openConversation('${c.id}')">
     <div class="lead-av ${pc}">${initial}</div>
     <div style="min-width:0">
-      <div class="lead-name">${escH(name)}</div>
-      <div class="lead-preview">${escH(c.last_message||'Tap to view conversation')}</div>
+      <div class="lead-name">${escH(name)}<span style="font-size:.6rem;font-weight:400;color:var(--muted);margin-left:6px;opacity:.7">${escH(platLabel)}</span></div>
+      <div class="lead-preview">${escH(preview)}</div>
     </div>
     <div class="lead-meta">
       <div class="lead-time">${time}</div>
-      <div class="lead-plat ${pc}">${platLabel}</div>
+      <div class="lead-plat ${pc}">${escH(c.name?platLabel:'')}</div>
     </div>
   </div>`;
 }
