@@ -194,7 +194,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .toast.success{border-color:var(--green)}
 .toast.error{border-color:var(--red)}
 
-/* ══ VIS SYSTEM TAB CSS ══ */
+/* VIS SYSTEM CSS */
 
 
 
@@ -205,7 +205,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   --blue:#3b82f6;--cyan:#06b6d4;--wa:#25D366;--ig:#E1306C;--fb:#0866FF;
 }
 
-.vis-frame html, .vis-frame body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif}
 
 
 
@@ -215,9 +214,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 .vis-frame .live-pill{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--green-light);background:#05291611;border:1px solid var(--green);padding:3px 10px;border-radius:999px}
 
-.vis-frame .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);animation:visLivebeat 1.4s ease-in-out infinite}
+.vis-frame .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);animation:visLB 1.4s ease-in-out infinite}
 
-@keyframes visLivebeat{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+@keyframes visLB{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
 
 .vis-frame .clock{font-size:.72rem;color:var(--muted);font-family:monospace}
 
@@ -243,9 +242,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 .vis-frame .node-ring{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;border:2px solid;position:relative;margin:0 auto 6px;transition:all .3s}
 
-.vis-frame .node-ring::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid;opacity:.3;animation:visRingpulse 2.5s ease-in-out infinite}
+.vis-frame .node-ring::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid;opacity:.3;animation:visRP 2.5s ease-in-out infinite}
 
-@keyframes visRingpulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.15);opacity:.05}}
+@keyframes visRP{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.15);opacity:.05}}
 
 .vis-frame .node-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap}
 
@@ -289,7 +288,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 .vis-frame .sec-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--purple-light);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 
-.vis-frame .sec-title .dot{width:6px;height:6px;border-radius:50%;background:var(--purple-light);animation:visLivebeat 2s ease-in-out infinite}
+.vis-frame .sec-title .dot{width:6px;height:6px;border-radius:50%;background:var(--purple-light);animation:visLB 2s ease-in-out infinite}
 
 
 .vis-frame .funnel-row{display:flex;align-items:center;gap:8px;margin:4px 0}
@@ -316,7 +315,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 .vis-frame .a-dot.idle{background:var(--muted)}
 
-.vis-frame .a-dot.running{background:var(--amber);animation:visLivebeat .8s ease-in-out infinite}
+.vis-frame .a-dot.running{background:var(--amber);animation:visLB .8s ease-in-out infinite}
 
 .vis-frame .a-info{flex:1;min-width:0}
 
@@ -340,9 +339,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 .vis-frame .activity-feed{flex:1;overflow-y:auto;padding:0}
 
-.vis-frame .act-item{display:flex;gap:8px;padding:8px 16px;border-bottom:1px solid #0a1525;font-size:.65rem;animation:visFadeSlide .4s ease-out}
+.vis-frame .act-item{display:flex;gap:8px;padding:8px 16px;border-bottom:1px solid #0a1525;font-size:.65rem;animation:visFS .4s ease-out}
 
-@keyframes visFadeSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes visFS{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
 .vis-frame .act-time{color:var(--muted);flex-shrink:0;font-family:monospace;font-size:.6rem;margin-top:1px}
 
@@ -374,268 +373,15 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 
 
-.vis-frame .particle{position:absolute;pointer-events:none;border-radius:50%;animation:visParticleMove linear forwards}
+.vis-frame .particle{position:absolute;pointer-events:none;border-radius:50%;animation:visPM linear forwards}
 
-@keyframes visParticleMove{to{offset-distance:100%;opacity:0}}
+@keyframes visPM{to{offset-distance:100%;opacity:0}}
 
 
 
 .vis-frame ::-webkit-scrollbar{width:3px}
 .vis-frame ::-webkit-scrollbar-track{background:transparent}
 .vis-frame ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-
-/* ══ OLD SYSTEM CSS ══ */
-
-  
-  
-
-  
-.sys-view h1{ text-align:center; padding:32px 16px 8px; font-size:1.5rem; color:#a78bfa; letter-spacing:2px; text-transform:uppercase; }
-  
-.sys-view .subtitle{ text-align:center; color:#64748b; font-size:.85rem; margin-bottom:32px; }
-
-  
-  
-.sys-view .section-label{ text-align:center; font-size:.7rem; letter-spacing:3px; text-transform:uppercase; color:#475569; margin:8px 0 4px; }
-
-  
-  
-.sys-view .pipeline{ display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:0; padding:0 16px; }
-  
-.sys-view .stage-box{
-    position:relative; min-width:88px; padding:10px 14px; text-align:center;
-    background:#1e293b; border:1px solid #334155; border-radius:8px;
-    font-size:.72rem; font-weight:600; cursor:default;
-    transition: all .3s;
-  }
-  
-.sys-view .stage-box .label{ color:#94a3b8; font-size:.6rem; text-transform:uppercase; letter-spacing:1px; }
-  
-.sys-view .stage-box .name{ color:#e2e8f0; margin-top:2px; }
-  
-.sys-view .stage-box .data-badge{
-    position:absolute; top:-8px; right:-8px; background:#7c3aed; color:#fff;
-    font-size:.55rem; padding:2px 5px; border-radius:999px; white-space:nowrap;
-    opacity:0; transform:scale(0);
-    transition: all .3s .1s;
-  }
-  
-.sys-view .stage-box:hover .data-badge{ opacity:1; transform:scale(1); }
-
-  
-.sys-view .arrow{ color:#334155; font-size:1.2rem; margin:0 2px; flex-shrink:0; }
-
-  
-  
-.sys-view .s-initiated{ border-color:#1e40af; }
-  
-.sys-view .s-qualifier{ border-color:#1d4ed8; }
-  
-.sys-view .s-duration{ border-color:#2563eb; }
-  
-.sys-view .s-discharge{ border-color:#7c3aed; }
-  
-.sys-view .s-reveal{ border-color:#6d28d9; }
-  
-.sys-view .s-insight{ border-color:#7c3aed; }
-  
-.sys-view .s-close{ border-color:#b45309; }
-  
-.sys-view .s-objection{ border-color:#92400e; }
-  
-.sys-view .s-payment{ border-color:#065f46; }
-  
-.sys-view .s-converted{ border-color:#047857; background:#052e16; }
-
-  
-.sys-view .s-converted .name{ color:#34d399; }
-
-  
-  
-.sys-view .active-dot{
-    position:absolute; top:-5px; left:50%; transform:translateX(-50%);
-    width:10px; height:10px; background:#a78bfa; border-radius:50%;
-    box-shadow:0 0 12px #a78bfa;
-    animation: sysPulse 1.5s ease-in-out infinite;
-  }
-
-  
-@keyframes sysPulse{ 0%,100%{opacity:1;transform:translateX(-50%) scale(1)} 50%{opacity:.5;transform:translateX(-50%) scale(1.6)} }
-
-  
-  
-.sys-view .platforms{ display:flex; justify-content:center; gap:16px; flex-wrap:wrap; padding:0 16px; }
-  
-.sys-view .platform-card{
-    display:flex; align-items:center; gap:8px; padding:8px 16px;
-    background:#1e293b; border:1px solid #334155; border-radius:8px;
-    font-size:.8rem; font-weight:600;
-    animation: sysSlideIn .6s ease-out both;
-  }
-  
-.sys-view .platform-card .dot{ width:8px; height:8px; border-radius:50%; }
-
-  
-@keyframes sysSlideIn{ from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-
-  
-  
-.sys-view .lead-profile{
-    background:#1e293b; border:1px solid #7c3aed; border-radius:12px;
-    padding:16px 20px; max-width:640px; margin:0 auto;
-    animation: sysSlideIn .6s ease-out both;
-  }
-  
-.sys-view .lead-profile .profile-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-  
-.sys-view .lead-profile .name{ font-size:1rem; font-weight:700; color:#a78bfa; }
-  
-.sys-view .lead-profile .stage-pill{
-    font-size:.65rem; font-weight:700; padding:3px 10px; border-radius:999px;
-    background:#7c3aed22; border:1px solid #7c3aed; color:#a78bfa;
-    letter-spacing:1px; text-transform:uppercase;
-  }
-  
-.sys-view .profile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  
-.sys-view .profile-item{ font-size:.75rem; }
-  
-.sys-view .profile-item .pi-label{ color:#64748b; font-size:.65rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px; }
-  
-.sys-view .profile-item .pi-val{ color:#e2e8f0; }
-  
-.sys-view .highlight-tag{
-    display:inline-block; background:#7f1d1d; color:#fca5a5;
-    font-size:.62rem; font-weight:700; padding:2px 7px; border-radius:999px; margin:2px;
-  }
-  
-.sys-view .highlight-tag.blue{ background:#1e3a5f; color:#93c5fd; }
-  
-.sys-view .highlight-tag.green{ background:#052e16; color:#6ee7b7; }
-  
-.sys-view .highlight-tag.amber{ background:#451a03; color:#fcd34d; }
-
-  
-  
-.sys-view .funnel-wrap{ max-width:600px; margin:0 auto; padding:0 16px; }
-  
-.sys-view .funnel-row{
-    display:flex; align-items:center; gap:12px; margin:4px 0;
-    animation: sysSlideIn .5s ease-out both;
-  }
-  
-.sys-view .funnel-label{ width:110px; text-align:right; font-size:.72rem; color:#94a3b8; flex-shrink:0; }
-  
-.sys-view .funnel-bar-wrap{ flex:1; background:#1e293b; border-radius:999px; height:22px; overflow:hidden; }
-  
-.sys-view .funnel-bar{
-    height:100%; border-radius:999px; display:flex; align-items:center; padding-left:8px;
-    font-size:.65rem; font-weight:700; color:#fff; white-space:nowrap;
-    transition: width 1.5s cubic-bezier(.16,1,.3,1);
-  }
-  
-.sys-view .funnel-count{ width:48px; font-size:.72rem; color:#64748b; text-align:right; }
-  
-.sys-view .drop{ font-size:.65rem; color:#f87171; margin-left:4px; }
-
-  
-  
-.sys-view .agents-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; max-width:900px; margin:0 auto; padding:0 16px; }
-  
-.sys-view .agent-card{
-    background:#1e293b; border-radius:12px; padding:16px;
-    border:1px solid #334155; position:relative; overflow:hidden;
-    animation: sysSlideIn .6s ease-out both;
-    transition: border-color .3s, box-shadow .3s;
-  }
-  
-.sys-view .agent-card:hover{ border-color:#7c3aed; box-shadow:0 0 24px #7c3aed22; }
-  
-.sys-view .agent-card .agent-icon{ font-size:1.5rem; margin-bottom:8px; }
-  
-.sys-view .agent-card .agent-name{ font-size:.85rem; font-weight:700; color:#a78bfa; margin-bottom:4px; }
-  
-.sys-view .agent-card .agent-freq{ font-size:.62rem; color:#475569; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
-  
-.sys-view .agent-card .agent-desc{ font-size:.72rem; color:#94a3b8; line-height:1.5; }
-  
-.sys-view .agent-card .agent-outputs{ margin-top:10px; }
-  
-.sys-view .agent-card .output-tag{
-    display:inline-block; font-size:.6rem; padding:2px 6px; border-radius:4px;
-    background:#0f172a; border:1px solid #334155; color:#64748b; margin:2px;
-  }
-  
-.sys-view .pulse-ring{
-    position:absolute; top:12px; right:12px; width:8px; height:8px;
-    border-radius:50%; background:#34d399;
-    box-shadow:0 0 8px #34d399;
-  }
-
-  
-  
-.sys-view .insights-feed{ max-width:640px; margin:0 auto; padding:0 16px; }
-  
-.sys-view .insight-item{
-    display:flex; gap:12px; padding:12px; border-radius:8px;
-    background:#1e293b; border:1px solid #334155; margin-bottom:8px;
-    animation: sysSlideIn .5s ease-out both;
-  }
-  
-.sys-view .insight-item .i-icon{ font-size:1.2rem; flex-shrink:0; margin-top:2px; }
-  
-.sys-view .insight-item .i-title{ font-size:.78rem; font-weight:700; color:#e2e8f0; margin-bottom:3px; }
-  
-.sys-view .insight-item .i-desc{ font-size:.7rem; color:#94a3b8; line-height:1.5; }
-  
-.sys-view .insight-item .i-action{
-    display:inline-block; margin-top:6px; font-size:.65rem; font-weight:700;
-    padding:3px 10px; border-radius:999px; background:#7c3aed22;
-    border:1px solid #7c3aed; color:#a78bfa; cursor:pointer;
-  }
-
-  
-  
-.sys-view .evolve-loop{
-    display:flex; align-items:center; justify-content:center;
-    flex-wrap:wrap; gap:4px; max-width:800px; margin:0 auto; padding:0 16px;
-  }
-  
-.sys-view .loop-node{
-    padding:8px 16px; border-radius:999px;
-    font-size:.72rem; font-weight:700;
-    border:1px solid #334155; background:#1e293b;
-    color:#94a3b8;
-  }
-  
-.sys-view .loop-arrow{ color:#7c3aed; font-size:1.2rem; }
-
-  
-  
-.sys-view .divider{ border:none; border-top:1px solid #1e293b; margin:28px 16px; }
-
-  
-  
-.sys-view .connector{ display:flex; align-items:center; justify-content:center; margin:8px 0; }
-  
-.sys-view .connector-line{ width:2px; height:24px; background:linear-gradient(#334155,#7c3aed); margin:0 auto; }
-  
-.sys-view .connector-dot{ width:8px; height:8px; border-radius:50%; background:#7c3aed; margin:0 auto; }
-
-  
-  
-.sys-view .ticker{
-    background:#0f172a; border:1px solid #1e293b; border-radius:8px;
-    padding:10px 16px; max-width:640px; margin:0 auto;
-    font-size:.72rem; color:#64748b; font-family:monospace;
-    overflow:hidden; white-space:nowrap;
-  }
-  
-.sys-view .ticker span{ color:#34d399; }
-  
-.sys-view .ticker-cursor{ display:inline-block; width:8px; height:12px; background:#a78bfa; animation:sysBlink .8s steps(1) infinite; vertical-align:middle; margin-left:2px; }
-  
-@keyframes sysBlink{ 0%,100%{opacity:1} 50%{opacity:0} }
 
 </style>
 </head>
@@ -784,9 +530,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 
 
-  <!-- ══ VIS SYSTEM TAB ══ -->
   <div class="tab-panel" id="panel-system">
-    <div class="vis-frame" style="height:100%;width:100%;display:flex;flex-direction:column;overflow:hidden;background:#050a14">
+    <div class="vis-frame" style="height:100%;width:100%;display:flex;flex-direction:column;overflow:hidden;background:#050a14;position:relative">
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="logo"><span>🌿</span> Ayusomam — Live System Intelligence</div>
@@ -812,7 +557,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <!-- Funnel -->
     <div class="panel-section">
       <div class="sec-title"><div class="dot"></div>Live Funnel</div>
-      <div id="funnelRows">
+      <div id="visFunnelRows">
         <div style="color:var(--muted);font-size:.7rem;padding:4px">Loading…</div>
       </div>
     </div>
@@ -858,236 +603,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div><!-- /right-panel -->
 
 </div><!-- /main -->
-    </div>
-  </div>
-
-<div class="connector"><div class="connector-line"></div></div>
-
-<!-- ══════════════════════════════════ 3. LEAD PROFILE ══════════════════════════════════ -->
-<p class="section-label">③ Lead Profile — What Gets Saved</p>
-<div class="lead-profile" id="sys-leadCard">
-  <div class="profile-header">
-    <div class="name" id="sys-profileName">Loading…</div>
-    <div class="stage-pill" id="sys-profileStage">qualifier</div>
-  </div>
-  <div class="profile-grid">
-    <div class="profile-item">
-      <div class="pi-label">Platform</div>
-      <div class="pi-val" id="sys-pi-platform">WhatsApp</div>
-    </div>
-    <div class="profile-item">
-      <div class="pi-label">Language</div>
-      <div class="pi-val" id="sys-pi-lang">Hinglish</div>
-    </div>
-    <div class="profile-item">
-      <div class="pi-label">Main Symptom</div>
-      <div class="pi-val" id="sys-pi-symptom">Sneezing + watery discharge</div>
-    </div>
-    <div class="profile-item">
-      <div class="pi-label">Duration</div>
-      <div class="pi-val" id="sys-pi-duration">3 years (chronic)</div>
-    </div>
-    <div class="profile-item">
-      <div class="pi-label">Sinus Type</div>
-      <div class="pi-val" id="sys-pi-type">Kaphavata Allergic</div>
-    </div>
-    <div class="profile-item">
-      <div class="pi-label">Recommended Plan</div>
-      <div class="pi-val" id="sys-pi-plan">14-Day Core · ₹1,299</div>
-    </div>
-    <div class="profile-item" style="grid-column:1/-1">
-      <div class="pi-label">Clinical Highlights</div>
-      <div id="sys-pi-highlights" style="margin-top:4px">
-        <span class="highlight-tag">DNS</span>
-        <span class="highlight-tag">Morning worse</span>
-        <span class="highlight-tag amber">Seasonal allergy</span>
-        <span class="highlight-tag blue">Failed antihistamines</span>
-        <span class="highlight-tag green">No fever</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="connector"><div class="connector-line"></div></div>
-
-<!-- ══════════════════════════════════ 4. FUNNEL ══════════════════════════════════ -->
-<p class="section-label">④ Funnel Analytics — Find the Leaks</p>
-<div class="funnel-wrap" id="sys-funnelWrap">
-  <div class="funnel-row" style="animation-delay:.0s">
-    <div class="funnel-label">Initiated</div>
-    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb0" style="width:0%;background:#1d4ed8">100%</div></div>
-    <div class="funnel-count">248</div>
-  </div>
-  <div class="funnel-row" style="animation-delay:.1s">
-    <div class="funnel-label">Qualifier</div>
-    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb1" style="width:0%;background:#2563eb">82% <span class="drop">▼18%</span></div></div>
-    <div class="funnel-count">203</div>
-  </div>
-  <div class="funnel-row" style="animation-delay:.2s">
-    <div class="funnel-label">Duration</div>
-    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb2" style="width:0%;background:#7c3aed">71%</div></div>
-    <div class="funnel-count">176</div>
-  </div>
-  <div class="funnel-row" style="animation-delay:.3s">
-    <div class="funnel-label">Discharge</div>
-    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb3" style="width:0%;background:#6d28d9">64%</div></div>
-    <div class="funnel-count">159</div>
-  </div>
-  <div class="funnel-row" style="animation-delay:.4s">
-    <div class="funnel-label">Reveal</div>
-    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb4" style="width:0%;background:#5b21b6">58%</div></div>
-    <div class="funnel-count">144</div>
-  </div>
-  <div class="funnel-row" style="animation-delay:.5s">
-    <div class="funnel-label">Close</div>
-    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb5" style="width:0%;background:#b45309">41% <span class="drop">▼17%</span></div></div>
-    <div class="funnel-count">102</div>
-  </div>
-  <div class="funnel-row" style="animation-delay:.6s">
-    <div class="funnel-label">Pmt Pending</div>
-    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb6" style="width:0%;background:#065f46">18%</div></div>
-    <div class="funnel-count">45</div>
-  </div>
-  <div class="funnel-row" style="animation-delay:.7s">
-    <div class="funnel-label" style="color:#34d399">✓ Converted</div>
-    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb7" style="width:0%;background:#047857">14%</div></div>
-    <div class="funnel-count" style="color:#34d399">35</div>
-  </div>
-</div>
-
-<div class="connector"><div class="connector-line"></div></div>
-
-<!-- ══════════════════════════════════ 5. AGENTS ══════════════════════════════════ -->
-<p class="section-label">⑤ Dedicated Agents</p>
-<div class="agents-grid">
-
-  <div class="agent-card" style="animation-delay:.0s">
-    <div class="pulse-ring"></div>
-    <div class="agent-icon">📊</div>
-    <div class="agent-name">Funnel Agent</div>
-    <div class="agent-freq">Runs: Daily @ 7am</div>
-    <div class="agent-desc">Calculates stage-by-stage drop-offs, identifies the biggest leak in the current 7-day window, and flags it with a fix suggestion.</div>
-    <div class="agent-outputs">
-      <span class="output-tag">drop-off %</span>
-      <span class="output-tag">leak stage</span>
-      <span class="output-tag">fix suggestion</span>
-    </div>
-  </div>
-
-  <div class="agent-card" style="animation-delay:.1s">
-    <div class="pulse-ring"></div>
-    <div class="agent-icon">🔬</div>
-    <div class="agent-name">Insights Agent</div>
-    <div class="agent-freq">Runs: Daily @ 8am</div>
-    <div class="agent-desc">Reads all conversations from the last 24h. Finds patterns — which sinus types come up most, which objections keep repeating, what language converts better.</div>
-    <div class="agent-outputs">
-      <span class="output-tag">top objections</span>
-      <span class="output-tag">winning phrases</span>
-      <span class="output-tag">sinus type mix</span>
-    </div>
-  </div>
-
-  <div class="agent-card" style="animation-delay:.2s">
-    <div class="pulse-ring"></div>
-    <div class="agent-icon">🔁</div>
-    <div class="agent-name">Follow-up Agent</div>
-    <div class="agent-freq">Runs: Every 1hr</div>
-    <div class="agent-desc">Finds leads stuck at a stage for 24h+. Generates a personalised re-engagement message based on their sinus type, name, and last stage reached.</div>
-    <div class="agent-outputs">
-      <span class="output-tag">personalised msg</span>
-      <span class="output-tag">stage-aware</span>
-      <span class="output-tag">name-aware</span>
-    </div>
-  </div>
-
-  <div class="agent-card" style="animation-delay:.3s">
-    <div class="pulse-ring"></div>
-    <div class="agent-icon">🧠</div>
-    <div class="agent-name">Improvement Agent</div>
-    <div class="agent-freq">Runs: Weekly</div>
-    <div class="agent-desc">Compares this week vs last week. Suggests specific prompt edits, new objection handlers, or flow changes. Outputs a ranked improvement list.</div>
-    <div class="agent-outputs">
-      <span class="output-tag">prompt patches</span>
-      <span class="output-tag">A/B suggestions</span>
-      <span class="output-tag">weekly brief</span>
-    </div>
-  </div>
-
-</div>
-
-<div class="connector"><div class="connector-line"></div></div>
-
-<!-- ══════════════════════════════════ 6. SELF-EVOLVE LOOP ══════════════════════════════════ -->
-<p class="section-label">⑥ Self-Evolving Loop</p>
-<div class="evolve-loop">
-  <div class="loop-node" style="border-color:#1d4ed8;color:#93c5fd">📩 New Lead</div>
-  <div class="loop-arrow">→</div>
-  <div class="loop-node" style="border-color:#7c3aed;color:#c4b5fd">🤖 Bot Conversation</div>
-  <div class="loop-arrow">→</div>
-  <div class="loop-node" style="border-color:#065f46;color:#6ee7b7">📦 Data Stored</div>
-  <div class="loop-arrow">→</div>
-  <div class="loop-node" style="border-color:#b45309;color:#fcd34d">📊 Agents Analyse</div>
-  <div class="loop-arrow">→</div>
-  <div class="loop-node" style="border-color:#9f1239;color:#fda4af">💡 Insights Generated</div>
-  <div class="loop-arrow">→</div>
-  <div class="loop-node" style="border-color:#1d4ed8;color:#93c5fd">🔧 Prompt Updated</div>
-  <div class="loop-arrow">→</div>
-  <div class="loop-node" style="border-color:#7c3aed;color:#c4b5fd">📈 Better Conversion</div>
-  <div class="loop-arrow">→</div>
-  <div class="loop-node" style="border-color:#065f46;color:#6ee7b7">🔄 Repeat</div>
-</div>
-
-<div class="connector"><div class="connector-line"></div></div>
-
-<!-- ══════════════════════════════════ 7. TODAY'S INSIGHTS ══════════════════════════════════ -->
-<p class="section-label">⑦ Daily Insights Feed (sample)</p>
-<div class="insights-feed">
-
-  <div class="insight-item" style="animation-delay:.0s;border-color:#f87171">
-    <div class="i-icon">🔴</div>
-    <div>
-      <div class="i-title">Big Leak: Reveal → Close (17% drop)</div>
-      <div class="i-desc">Leads are engaging up to the reveal stage but dropping off before the close. Likely the pitch feels too abrupt after the sinus type reveal. Try adding a bridge message between Insight and Close.</div>
-      <span class="i-action">Apply Fix →</span>
-    </div>
-  </div>
-
-  <div class="insight-item" style="animation-delay:.1s;border-color:#fcd34d">
-    <div class="i-icon">🟡</div>
-    <div>
-      <div class="i-title">Top Objection This Week: "Sochenge" (34 times)</div>
-      <div class="i-desc">The most common objection is "will think about it." The current response may not create enough urgency. Suggested new line: "Bahut log yahi kehte hain — aur 3 mahine baad waapis aate hain worse condition mein."</div>
-      <span class="i-action">Update Prompt →</span>
-    </div>
-  </div>
-
-  <div class="insight-item" style="animation-delay:.2s;border-color:#34d399">
-    <div class="i-icon">🟢</div>
-    <div>
-      <div class="i-title">Kaphavata Type Converts 2× Better</div>
-      <div class="i-desc">Kaphavata allergic leads convert at 28% vs 12% average. The seasonal allergy angle resonates strongly. Consider qualifying for this angle earlier in the flow.</div>
-      <span class="i-action">View Details →</span>
-    </div>
-  </div>
-
-  <div class="insight-item" style="animation-delay:.3s;border-color:#93c5fd">
-    <div class="i-icon">🔵</div>
-    <div>
-      <div class="i-title">Hinglish Outperforms English by 40%</div>
-      <div class="i-desc">Leads who start in hinglish convert at 18% vs 11% for those starting in English. Auto-detection is working, but consider opening with hinglish even for English-starting users.</div>
-      <span class="i-action">A/B Test →</span>
-    </div>
-  </div>
-
-</div>
-
-<!-- ══════════════════════════════════ LIVE LOG ══════════════════════════════════ -->
-<p class="section-label" style="margin-top:24px">⑧ Live Activity Log</p>
-<div class="ticker" id="sys-ticker">
-  <span>[Bot]</span> Waiting for messages…<div class="ticker-cursor"></div>
-</div>
-
-<br><br>
     </div>
   </div>
 </div>
@@ -1157,7 +672,7 @@ function initials(name) {
 // ─────────────────────────────────────────────
 document.querySelectorAll('.tab').forEach(t => {
   t.addEventListener('click', () => {
-    if (t.dataset.tab === 'system') setTimeout(initVisTab, 50);
+    if(t.dataset.tab==='system') setTimeout(initVisTab,50);
     document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
@@ -1218,14 +733,14 @@ async function loadFunnel() {
         <div class="f-count">${r.count}</div>
       </div>`;
     });
-    document.getElementById('funnelRows').innerHTML = html;
+    document.getElementById('visFunnelRows').innerHTML = html;
     // Animate bars
     setTimeout(() => d.rows.forEach((r,i) => {
       const el = document.getElementById('fb'+i);
       if (el) el.style.width = Math.max(r.pct, 4) + '%';
     }), 100);
   } catch(e) {
-    document.getElementById('funnelRows').innerHTML = `<div style="color:var(--muted);font-size:.75rem;padding:8px">No funnel data yet. Run the Funnel Agent to generate.</div>`;
+    document.getElementById('visFunnelRows').innerHTML = `<div style="color:var(--muted);font-size:.75rem;padding:8px">No funnel data yet. Run the Funnel Agent to generate.</div>`;
   }
 }
 
@@ -1556,74 +1071,11 @@ async function fullRefresh() {
 fullRefresh();
 setInterval(fullRefresh, 30000); // refresh every 30s
 
-moveActiveDot();
-setInterval(moveActiveDot, 1800);
 
-// ── Cycle lead profile ──
-const leads = [
-  { name:'Rahul Sharma', stage:'close', platform:'WhatsApp', lang:'Hinglish', symptom:'Sneezing + watery discharge', dur:'3 years', type:'Kaphavata Allergic', plan:'14-Day Core · ₹1,299', highlights:['DNS','Morning worse','Seasonal allergy','Failed antihistamines','No fever'] },
-  { name:'Priya Mehta',  stage:'reveal', platform:'Instagram', lang:'Hindi', symptom:'Thick yellow discharge + facial pain', dur:'8 months', type:'Pitta Inflammatory', plan:'14-Day Core · ₹1,299', highlights:['Facial pressure','Evening worse','Spicy food trigger'] },
-  { name:'Deepak Nair',  stage:'qualifier', platform:'Messenger', lang:'English', symptom:'Heavy congestion + post-meal worse', dur:'2 months', type:'Kapha Congestive', plan:'7-Day Starter · ₹499', highlights:['Post-meal congestion','No fever','Winter worse'] },
-  { name:'Anjali Patel', stage:'converted', platform:'WhatsApp', lang:'Hinglish', symptom:'Dry sinuses + one-sided headache', dur:'6 months', type:'Vata Dry', plan:'7-Day Starter · ₹499', highlights:['No discharge','Wind sensitive','One-sided pain','AC office'] },
-];
-let lIdx = 0;
-function cycleLead() {
-  const l = leads[lIdx % leads.length]; lIdx++;
-  document.getElementById('sys-profileName').textContent  = l.name;
-  document.getElementById('sys-profileStage').textContent = l.stage;
-  document.getElementById('sys-pi-platform').textContent  = l.platform;
-  document.getElementById('sys-pi-lang').textContent      = l.lang;
-  document.getElementById('sys-pi-symptom').textContent   = l.symptom;
-  document.getElementById('sys-pi-duration').textContent  = l.dur;
-  document.getElementById('sys-pi-type').textContent      = l.type;
-  document.getElementById('sys-pi-plan').textContent      = l.plan;
-  const hEl = document.getElementById('sys-pi-highlights');
-  const colors = ['','blue','green','amber','blue',''];
-  hEl.innerHTML = l.highlights.map((h,i) => `<span class="highlight-tag ${colors[i%colors.length]}">${h}</span>`).join('');
-}
-cycleLead();
-setInterval(() => { document.getElementById('sys-leadCard').style.opacity='0.3'; setTimeout(() => { cycleLead(); document.getElementById('sys-leadCard').style.opacity='1'; }, 400); }, 3500);
-document.getElementById('sys-leadCard').style.transition='opacity .4s';
-
-// ── Live log ticker ──
-const logs = [
-  '[WhatsApp] Rahul Sharma (9876543210): "naak bahut band rehti hai"',
-  '[Bot] Language detected: hinglish · Stage: initiated → qualifier',
-  '[Bot] Name detected: "Rahul" (source: meta) · Saved to Supabase',
-  '[WhatsApp] Rahul: "teen saal se hai" → Stage: duration → discharge',
-  '[Bot] Duration captured: "3 years" · Flagged: chronic',
-  '[Bot] Sinus type detected: kaphavata_allergic · Plan: core_1299',
-  '[WhatsApp] Priya Mehta (9834567123): "mota peela discharge aata hai"',
-  '[Instagram] Deepak Nair sent a message · Fetching name from Graph API…',
-  '[Instagram] Name resolved: "Deepak Nair" · Stage: initiated',
-  '[Bot] Payment screenshot received from Anjali Patel · Stage → payment_pending',
-  '[FunnelAgent] Ran at 07:00 · Biggest leak: Reveal→Close (17%) · Suggestion saved',
-  '[InsightsAgent] Analysed 47 conversations · Top objection: "sochenge" (34×)',
-  '[FollowUp] Sent to 3 stale leads (silent 24h+) · Personalised by sinus type',
-  '[Razorpay] pay_Qx9sZ7mAbC3d4e confirmed · Rahul → converted · Onboarding sent',
-];
-let tIdx = 0;
-const ticker = document.getElementById('sys-ticker');
-function nextLog() {
-  const log = logs[tIdx % logs.length]; tIdx++;
-  const parts = log.split(' ');
-  const tag = parts.shift();
-  const color = tag.startsWith('[Bot]') ? '#a78bfa' : tag.startsWith('[Razorpay]') ? '#34d399' : tag.startsWith('[Funnel') || tag.startsWith('[Insights') ? '#fcd34d' : tag.startsWith('[Follow') ? '#93c5fd' : '#f87171';
-  ticker.innerHTML = `<span style="color:${color}">${tag}</span> ${parts.join(' ')}<div class="ticker-cursor"></div>`;
-}
-nextLog();
-setInterval(nextLog, 2800);
-
-}
-
-
-
-// ─── VIS SYSTEM TAB INIT ───
-let visTabInitialized = false;
-function initVisTab() {
-  if (visTabInitialized) return;
-  visTabInitialized = true;
-  (function() {
+let _visInit = false;
+function initVisTab(){
+  if(_visInit)return; _visInit=true;
+  (function(){
 
 // ═══════════════════════════════════════════
 // CONFIG
@@ -1864,7 +1316,7 @@ async function loadFunnel() {
         <div class="f-num">${r.count}</div>
       </div>`;
     });
-    document.getElementById('funnelRows').innerHTML = html;
+    document.getElementById('visFunnelRows').innerHTML = html;
     // Update node counts
     const cnt = document.getElementById('cnt-db');
     if (cnt && d.total) { cnt.style.display=''; cnt.textContent=d.total; }
@@ -1874,7 +1326,7 @@ async function loadFunnel() {
     }), 100);
     pulseNode('db');
   } catch(e) {
-    document.getElementById('funnelRows').innerHTML = `<div style="color:var(--muted);font-size:.65rem;padding:4px">No funnel data — run Funnel Agent</div>`;
+    document.getElementById('visFunnelRows').innerHTML = `<div style="color:var(--muted);font-size:.65rem;padding:4px">No funnel data — run Funnel Agent</div>`;
   }
 }
 
