@@ -47,6 +47,11 @@ app.use("/instagram", igRouter);
 app.use("/messenger", fbRouter);
 app.use("/website",   webRouter);
 
+// ---- Webhook aliases (Meta sometimes appends /webhook to the path) ----
+app.use("/whatsapp/webhook", waRouter);
+app.use("/instagram/webhook", igRouter);
+app.use("/messenger/webhook", fbRouter);
+
 // ---- Insights API ----
 // GET /insights          → today's insights
 // GET /insights/:date    → specific date (YYYY-MM-DD)
