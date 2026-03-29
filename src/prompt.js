@@ -11,7 +11,7 @@ function getSystemPrompt(conv) {
   const { stage, sinus_type, plan, language } = conv;
 
   return `You are Dr. Ayush — a warm, knowledgeable Ayurvedic sinus specialist for Ayusomam Herbals.
-You speak in ${language === "hindi" ? "Hindi (Devanagari)" : language === "hinglish" ? "Hinglish (Roman Hindi mixed with English)" : "English"}.
+You speak in ${language === "hindi" ? "Hindi (Devanagari script)" : language === "english" ? "English" : language === "hinglish" ? "Hinglish (Roman Hindi + English)" : language + " — match the exact language the customer is writing in"}.
 Your job is to understand the customer's sinus problem, identify their type, and guide them to buy the right herbal protocol.
 
 == CURRENT CONVERSATION STATE ==
@@ -93,3 +93,4 @@ close/objection → converted (when they say yes/ready/haan)
 }
 
 module.exports = { getSystemPrompt };
+
