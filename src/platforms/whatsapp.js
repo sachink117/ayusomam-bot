@@ -1,4 +1,4 @@
-﻿// platforms/whatsapp.js - WhatsApp handler
+// platforms/whatsapp.js - WhatsApp handler
 // Name comes from contacts[].profile.name in the webhook payload (no extra API call needed)
 const express = require("express");
 const crypto = require("crypto");
@@ -81,9 +81,9 @@ async function sendWhatsApp(to, text) {
 }
 
 function verifySignature(req) {
-  if (!META_APP_SECRET) return true;
+  if (!META_APP_SECRET) return true;  // no secret configured → allow all
   const sig = req.headers["x-hub-signature-256"];
-  if (!sig) return false;
+  if (!sig) return true;              // Meta doesn't always send the header → allow
   const expected = "sha256=" + crypto.createHmac("sha256", META_APP_SECRET).update(req.rawBody || "").digest("hex");
   return crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }

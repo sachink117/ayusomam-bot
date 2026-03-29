@@ -1,4 +1,4 @@
-﻿// bot.js - Core bot engine
+// bot.js - Core bot engine
 const Anthropic = require("@anthropic-ai/sdk");
 const { ANTHROPIC_API_KEY, CLAUDE_MODEL, CLAUDE_MAX_TOKENS } = require("./config");
 const { getOrCreateConversation, updateConversation, updateName, logMessage, getRecentMessages, resetConversation, createBuyer, logFunnelEvent, logObjection } = require("./db");
@@ -172,7 +172,8 @@ async function processMessage(platform, userId, userText, metaName = null) {
     if (nextStage !== conv.stage) logFunnelEvent(conv.id, platform, conv.stage, nextStage).catch(()=>{});
     // Detect objections
     const objWords = ["sochenge","will think","expensive","mehenga","kaam karega","will it work","sure nahi"];
-    if (["close","objection"].includes(nextStage) && objWords.some(w=>lower.includes(w))) {
+    const lowerText = userText.toLowerCase();
+    if (["close","objection"].includes(nextStage) && objWords.some(w=>lowerText.includes(w))) {
       logObjection(conv.id, userText.slice(0,100), nextStage).catch(()=>{});
     }
     const reply = await callClaude(conv,history,userText);
