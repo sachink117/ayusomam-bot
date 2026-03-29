@@ -37,10 +37,17 @@ module.exports = {
   SMTP_USER: process.env.SMTP_USER,
   SMTP_PASS: process.env.SMTP_PASS,
 
+  // ---- Payment links (set these in Render env vars) ----
+  // Razorpay payment page links — one per plan
+  RAZORPAY_LINK_499:  process.env.RAZORPAY_LINK_499,   // 7-Day Starter Rs.499
+  RAZORPAY_LINK_1299: process.env.RAZORPAY_LINK_1299,  // 14-Day Core Rs.1,299
+
   // ---- Conversation constants ----
 
   // Valid conversation stages in order
-  STAGES: ["initiated", "qualifier", "duration", "discharge", "reveal", "insight", "close", "objection", "converted"],
+  // payment_pending = screenshot/UPI received, waiting for manual admin confirmation
+  // converted       = payment fully confirmed (Razorpay auto-detect OR admin confirmed)
+  STAGES: ["initiated", "qualifier", "duration", "discharge", "reveal", "insight", "close", "objection", "payment_pending", "converted"],
 
   // Sinus types detected during qualifier stage
   SINUS_TYPES: ["kaphavata_allergic", "vata_dry", "pitta_inflammatory", "kapha_congestive", "tridosha_chronic"],
@@ -52,7 +59,6 @@ module.exports = {
   },
 
   // WhatsApp message buffering window (ms)
-  // Waits this long after the last message before processing, to combine split messages
   WA_BUFFER_MS: 8000,
 
   // Claude model to use

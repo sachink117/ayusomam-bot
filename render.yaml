@@ -37,3 +37,7 @@
         sync: false
       - key: SMTP_PASS
         sync: false
+      - key: RAZORPAY_LINK_499
+        sync: false
+      - key: RAZORPAY_LINK_1299
+        sync: false
