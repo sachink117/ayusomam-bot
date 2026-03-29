@@ -13,6 +13,8 @@
   --blue:#2563eb;--cyan:#0891b2;
 }
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── TOPBAR ── */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
 .topbar .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.95rem;color:var(--purple-light)}
 .topbar .logo span{font-size:1.2rem}
@@ -20,6 +22,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);animation:pulse 1.5s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .refresh-info{font-size:.68rem;color:var(--muted)}
+
+/* ── STATS ROW ── */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 20px;flex-shrink:0}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;position:relative;overflow:hidden;transition:border-color .2s}
 .stat-card:hover{border-color:var(--purple)}
@@ -27,15 +31,23 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .stat-card .s-val{font-size:1.8rem;font-weight:700;line-height:1}
 .stat-card .s-sub{font-size:.68rem;color:var(--muted);margin-top:4px}
 .stat-card .s-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--purple);transition:width .8s ease}
+
+/* ── TABS ── */
 .tabs{display:flex;gap:0;padding:0 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface)}
 .tab{padding:10px 18px;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
 .tab:hover{color:var(--text)}
 .tab.active{color:var(--purple-light);border-bottom-color:var(--purple)}
+
+/* ── MAIN CONTENT AREA ── */
 .content{flex:1;overflow:hidden;display:flex;flex-direction:column}
 .tab-panel{display:none;flex:1;overflow:hidden}
 .tab-panel.active{display:flex}
+
+/* ══════════ OVERVIEW TAB ══════════ */
 .overview-layout{display:grid;grid-template-columns:1fr 320px;gap:12px;padding:14px 20px;overflow-y:auto;width:100%}
 @media(max-width:900px){.overview-layout{grid-template-columns:1fr}}
+
+/* Funnel */
 .funnel-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
 .card-title{font-size:.78rem;font-weight:700;color:var(--purple-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
 .funnel-row{display:flex;align-items:center;gap:10px;margin:5px 0}
@@ -45,9 +57,13 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .f-count{width:36px;text-align:right;font-size:.7rem;color:var(--muted)}
 .f-drop{font-size:.6rem;color:var(--red);margin-left:3px}
 .f-pct{font-size:.6rem;color:#fff9}
+
+/* Platform mix */
 .platform-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .plat-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:.7rem;font-weight:600;border:1px solid var(--border);background:#0f172a}
 .plat-dot{width:7px;height:7px;border-radius:50%}
+
+/* Insights feed */
 .insights-col{display:flex;flex-direction:column;gap:10px}
 .insight-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
 .insight-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
@@ -55,7 +71,11 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .i-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
 .i-title{font-size:.74rem;font-weight:700;margin-bottom:2px}
 .i-desc{font-size:.68rem;color:var(--muted);line-height:1.5}
+
+/* ══════════ CONVERSATIONS TAB ══════════ */
 .conv-layout{display:grid;grid-template-columns:340px 1fr;width:100%;overflow:hidden}
+
+/* Left: conversation list */
 .conv-list-wrap{border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .conv-search{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;gap:6px;background:var(--surface);flex-shrink:0}
 .conv-search input{flex:1;background:#0f172a;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:.78rem;color:var(--text);outline:none}
@@ -79,6 +99,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .badge-converted{background:#05291622;color:var(--green-light);border:1px solid #059669}
 .badge-pending{background:#45140322;color:#fcd34d;border:1px solid #d9770644}
 .unread-dot{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:var(--purple)}
+
+/* Right: chat view */
 .chat-wrap{display:flex;flex-direction:column;overflow:hidden}
 .chat-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--surface)}
 .chat-header-info{display:flex;align-items:center;gap:10px}
@@ -90,6 +112,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .action-btn.primary{background:var(--purple);color:#fff;border-color:var(--purple)}
 .action-btn.primary:hover{background:#6d28d9}
 .action-btn.success{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* Profile strip */
 .profile-strip{padding:8px 16px;border-bottom:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0;background:#0a0e1a}
 .ps-item{font-size:.68rem}
 .ps-label{color:var(--muted);font-size:.6rem;text-transform:uppercase;letter-spacing:1px}
@@ -99,6 +123,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .hc-blue{background:#1e3a5f;color:#93c5fd}
 .hc-amber{background:#451a03;color:#fcd34d}
 .hc-green{background:#052e16;color:#6ee7b7}
+
+/* Messages */
 .messages-area{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
 .msg{display:flex;gap:8px;max-width:80%}
 .msg.user{align-self:flex-start}
@@ -107,15 +133,21 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .msg.user .msg-bubble{background:var(--card);border:1px solid var(--border)}
 .msg.assistant .msg-bubble{background:#7c3aed33;border:1px solid #7c3aed55}
 .msg-time{font-size:.6rem;color:var(--muted);margin-top:3px;text-align:right}
+
+/* Reply bar */
 .reply-bar{padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;background:var(--surface)}
 .reply-bar textarea{flex:1;background:#0f172a;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:.78rem;color:var(--text);resize:none;outline:none;font-family:inherit;height:60px;transition:border-color .2s}
 .reply-bar textarea:focus{border-color:var(--purple)}
 .send-btn{padding:8px 16px;background:var(--purple);border:none;border-radius:8px;color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
 .send-btn:hover{background:#6d28d9}
 .send-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* Empty state */
 .empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);gap:8px}
 .empty-state .big-icon{font-size:2.5rem}
 .empty-state p{font-size:.8rem}
+
+/* ══════════ LEADS TAB ══════════ */
 .leads-layout{padding:14px 20px;overflow-y:auto;width:100%}
 .leads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
 .lead-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
@@ -127,6 +159,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .lc-item .lc-label{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
 .lc-item .lc-val{font-size:.72rem;color:var(--text);margin-top:1px}
 .lc-highlights{grid-column:1/-1;margin-top:4px}
+
+/* ══════════ INSIGHTS TAB ══════════ */
 .insights-layout{padding:14px 20px;overflow-y:auto;width:100%}
 .insights-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .run-btn{padding:6px 14px;background:var(--purple);border:none;border-radius:6px;color:#fff;font-size:.72rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px}
@@ -143,24 +177,288 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .impact-high{background:#7f1d1d;color:#fca5a5}
 .impact-medium{background:#451a03;color:#fcd34d}
 .impact-low{background:#052e16;color:#6ee7b7}
+
+/* ── SCROLLBARS ── */
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ── LOADING ── */
 .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-overlay{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--muted);gap:10px;font-size:.8rem}
+
+/* ── TOAST ── */
 .toast{position:fixed;bottom:20px;right:20px;background:#1e293b;border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:.78rem;box-shadow:0 4px 24px #00000060;z-index:999;transform:translateY(80px);opacity:0;transition:all .3s}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{border-color:var(--green)}
 .toast.error{border-color:var(--red)}
+
+/* ══ SYSTEM TAB CSS ══ */
+
+  
+  
+
+  
+.sys-view h1{ text-align:center; padding:32px 16px 8px; font-size:1.5rem; color:#a78bfa; letter-spacing:2px; text-transform:uppercase; }
+  
+.sys-view .subtitle{ text-align:center; color:#64748b; font-size:.85rem; margin-bottom:32px; }
+
+  
+  
+.sys-view .section-label{ text-align:center; font-size:.7rem; letter-spacing:3px; text-transform:uppercase; color:#475569; margin:8px 0 4px; }
+
+  
+  
+.sys-view .pipeline{ display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:0; padding:0 16px; }
+  
+.sys-view .stage-box{
+    position:relative; min-width:88px; padding:10px 14px; text-align:center;
+    background:#1e293b; border:1px solid #334155; border-radius:8px;
+    font-size:.72rem; font-weight:600; cursor:default;
+    transition: all .3s;
+  }
+  
+.sys-view .stage-box .label{ color:#94a3b8; font-size:.6rem; text-transform:uppercase; letter-spacing:1px; }
+  
+.sys-view .stage-box .name{ color:#e2e8f0; margin-top:2px; }
+  
+.sys-view .stage-box .data-badge{
+    position:absolute; top:-8px; right:-8px; background:#7c3aed; color:#fff;
+    font-size:.55rem; padding:2px 5px; border-radius:999px; white-space:nowrap;
+    opacity:0; transform:scale(0);
+    transition: all .3s .1s;
+  }
+  
+.sys-view .stage-box:hover .data-badge{ opacity:1; transform:scale(1); }
+
+  
+.sys-view .arrow{ color:#334155; font-size:1.2rem; margin:0 2px; flex-shrink:0; }
+
+  
+  
+.sys-view .s-initiated{ border-color:#1e40af; }
+  
+.sys-view .s-qualifier{ border-color:#1d4ed8; }
+  
+.sys-view .s-duration{ border-color:#2563eb; }
+  
+.sys-view .s-discharge{ border-color:#7c3aed; }
+  
+.sys-view .s-reveal{ border-color:#6d28d9; }
+  
+.sys-view .s-insight{ border-color:#7c3aed; }
+  
+.sys-view .s-close{ border-color:#b45309; }
+  
+.sys-view .s-objection{ border-color:#92400e; }
+  
+.sys-view .s-payment{ border-color:#065f46; }
+  
+.sys-view .s-converted{ border-color:#047857; background:#052e16; }
+
+  
+.sys-view .s-converted .name{ color:#34d399; }
+
+  
+  
+.sys-view .active-dot{
+    position:absolute; top:-5px; left:50%; transform:translateX(-50%);
+    width:10px; height:10px; background:#a78bfa; border-radius:50%;
+    box-shadow:0 0 12px #a78bfa;
+    animation: sysPulse 1.5s ease-in-out infinite;
+  }
+
+  
+@keyframes sysPulse{ 0%,100%{opacity:1;transform:translateX(-50%) scale(1)} 50%{opacity:.5;transform:translateX(-50%) scale(1.6)} }
+
+  
+  
+.sys-view .platforms{ display:flex; justify-content:center; gap:16px; flex-wrap:wrap; padding:0 16px; }
+  
+.sys-view .platform-card{
+    display:flex; align-items:center; gap:8px; padding:8px 16px;
+    background:#1e293b; border:1px solid #334155; border-radius:8px;
+    font-size:.8rem; font-weight:600;
+    animation: sysSlideIn .6s ease-out both;
+  }
+  
+.sys-view .platform-card .dot{ width:8px; height:8px; border-radius:50%; }
+
+  
+@keyframes sysSlideIn{ from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+  
+  
+.sys-view .lead-profile{
+    background:#1e293b; border:1px solid #7c3aed; border-radius:12px;
+    padding:16px 20px; max-width:640px; margin:0 auto;
+    animation: sysSlideIn .6s ease-out both;
+  }
+  
+.sys-view .lead-profile .profile-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  
+.sys-view .lead-profile .name{ font-size:1rem; font-weight:700; color:#a78bfa; }
+  
+.sys-view .lead-profile .stage-pill{
+    font-size:.65rem; font-weight:700; padding:3px 10px; border-radius:999px;
+    background:#7c3aed22; border:1px solid #7c3aed; color:#a78bfa;
+    letter-spacing:1px; text-transform:uppercase;
+  }
+  
+.sys-view .profile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  
+.sys-view .profile-item{ font-size:.75rem; }
+  
+.sys-view .profile-item .pi-label{ color:#64748b; font-size:.65rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px; }
+  
+.sys-view .profile-item .pi-val{ color:#e2e8f0; }
+  
+.sys-view .highlight-tag{
+    display:inline-block; background:#7f1d1d; color:#fca5a5;
+    font-size:.62rem; font-weight:700; padding:2px 7px; border-radius:999px; margin:2px;
+  }
+  
+.sys-view .highlight-tag.blue{ background:#1e3a5f; color:#93c5fd; }
+  
+.sys-view .highlight-tag.green{ background:#052e16; color:#6ee7b7; }
+  
+.sys-view .highlight-tag.amber{ background:#451a03; color:#fcd34d; }
+
+  
+  
+.sys-view .funnel-wrap{ max-width:600px; margin:0 auto; padding:0 16px; }
+  
+.sys-view .funnel-row{
+    display:flex; align-items:center; gap:12px; margin:4px 0;
+    animation: sysSlideIn .5s ease-out both;
+  }
+  
+.sys-view .funnel-label{ width:110px; text-align:right; font-size:.72rem; color:#94a3b8; flex-shrink:0; }
+  
+.sys-view .funnel-bar-wrap{ flex:1; background:#1e293b; border-radius:999px; height:22px; overflow:hidden; }
+  
+.sys-view .funnel-bar{
+    height:100%; border-radius:999px; display:flex; align-items:center; padding-left:8px;
+    font-size:.65rem; font-weight:700; color:#fff; white-space:nowrap;
+    transition: width 1.5s cubic-bezier(.16,1,.3,1);
+  }
+  
+.sys-view .funnel-count{ width:48px; font-size:.72rem; color:#64748b; text-align:right; }
+  
+.sys-view .drop{ font-size:.65rem; color:#f87171; margin-left:4px; }
+
+  
+  
+.sys-view .agents-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; max-width:900px; margin:0 auto; padding:0 16px; }
+  
+.sys-view .agent-card{
+    background:#1e293b; border-radius:12px; padding:16px;
+    border:1px solid #334155; position:relative; overflow:hidden;
+    animation: sysSlideIn .6s ease-out both;
+    transition: border-color .3s, box-shadow .3s;
+  }
+  
+.sys-view .agent-card:hover{ border-color:#7c3aed; box-shadow:0 0 24px #7c3aed22; }
+  
+.sys-view .agent-card .agent-icon{ font-size:1.5rem; margin-bottom:8px; }
+  
+.sys-view .agent-card .agent-name{ font-size:.85rem; font-weight:700; color:#a78bfa; margin-bottom:4px; }
+  
+.sys-view .agent-card .agent-freq{ font-size:.62rem; color:#475569; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+  
+.sys-view .agent-card .agent-desc{ font-size:.72rem; color:#94a3b8; line-height:1.5; }
+  
+.sys-view .agent-card .agent-outputs{ margin-top:10px; }
+  
+.sys-view .agent-card .output-tag{
+    display:inline-block; font-size:.6rem; padding:2px 6px; border-radius:4px;
+    background:#0f172a; border:1px solid #334155; color:#64748b; margin:2px;
+  }
+  
+.sys-view .pulse-ring{
+    position:absolute; top:12px; right:12px; width:8px; height:8px;
+    border-radius:50%; background:#34d399;
+    box-shadow:0 0 8px #34d399;
+  }
+
+  
+  
+.sys-view .insights-feed{ max-width:640px; margin:0 auto; padding:0 16px; }
+  
+.sys-view .insight-item{
+    display:flex; gap:12px; padding:12px; border-radius:8px;
+    background:#1e293b; border:1px solid #334155; margin-bottom:8px;
+    animation: sysSlideIn .5s ease-out both;
+  }
+  
+.sys-view .insight-item .i-icon{ font-size:1.2rem; flex-shrink:0; margin-top:2px; }
+  
+.sys-view .insight-item .i-title{ font-size:.78rem; font-weight:700; color:#e2e8f0; margin-bottom:3px; }
+  
+.sys-view .insight-item .i-desc{ font-size:.7rem; color:#94a3b8; line-height:1.5; }
+  
+.sys-view .insight-item .i-action{
+    display:inline-block; margin-top:6px; font-size:.65rem; font-weight:700;
+    padding:3px 10px; border-radius:999px; background:#7c3aed22;
+    border:1px solid #7c3aed; color:#a78bfa; cursor:pointer;
+  }
+
+  
+  
+.sys-view .evolve-loop{
+    display:flex; align-items:center; justify-content:center;
+    flex-wrap:wrap; gap:4px; max-width:800px; margin:0 auto; padding:0 16px;
+  }
+  
+.sys-view .loop-node{
+    padding:8px 16px; border-radius:999px;
+    font-size:.72rem; font-weight:700;
+    border:1px solid #334155; background:#1e293b;
+    color:#94a3b8;
+  }
+  
+.sys-view .loop-arrow{ color:#7c3aed; font-size:1.2rem; }
+
+  
+  
+.sys-view .divider{ border:none; border-top:1px solid #1e293b; margin:28px 16px; }
+
+  
+  
+.sys-view .connector{ display:flex; align-items:center; justify-content:center; margin:8px 0; }
+  
+.sys-view .connector-line{ width:2px; height:24px; background:linear-gradient(#334155,#7c3aed); margin:0 auto; }
+  
+.sys-view .connector-dot{ width:8px; height:8px; border-radius:50%; background:#7c3aed; margin:0 auto; }
+
+  
+  
+.sys-view .ticker{
+    background:#0f172a; border:1px solid #1e293b; border-radius:8px;
+    padding:10px 16px; max-width:640px; margin:0 auto;
+    font-size:.72rem; color:#64748b; font-family:monospace;
+    overflow:hidden; white-space:nowrap;
+  }
+  
+.sys-view .ticker span{ color:#34d399; }
+  
+.sys-view .ticker-cursor{ display:inline-block; width:8px; height:12px; background:#a78bfa; animation:sysBlink .8s steps(1) infinite; vertical-align:middle; margin-left:2px; }
+  
+@keyframes sysBlink{ 0%,100%{opacity:1} 50%{opacity:0} }
+
 </style>
 </head>
 <body>
+
+<!-- TOPBAR -->
 <div class="topbar">
   <div class="logo"><span>🌿</span> Ayusomam Dashboard</div>
   <div class="live-badge"><div class="live-dot"></div>LIVE</div>
   <div class="refresh-info" id="lastRefresh">Connecting…</div>
 </div>
+
+<!-- STATS ROW -->
 <div class="stats-row">
   <div class="stat-card">
     <div class="s-label">Total Leads</div>
@@ -187,18 +485,29 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="s-bar" id="barPending" style="width:8%;background:var(--amber)"></div>
   </div>
 </div>
+
+<!-- TABS -->
 <div class="tabs">
   <div class="tab active" data-tab="overview">📊 Overview</div>
   <div class="tab" data-tab="conversations">💬 Conversations</div>
   <div class="tab" data-tab="leads">👤 Lead Profiles</div>
   <div class="tab" data-tab="insights">🧠 Insights</div>
+  <div class="tab" data-tab="system">🏗️ System</div>
 </div>
+
+<!-- CONTENT -->
 <div class="content">
+
+  <!-- ══ OVERVIEW TAB ══ -->
   <div class="tab-panel active" id="panel-overview">
     <div class="overview-layout">
       <div>
+        <!-- Funnel -->
         <div class="funnel-card">
-          <div class="card-title">7-Day Funnel<div id="funnelTotal" style="font-size:.7rem;color:var(--muted);font-weight:400"></div></div>
+          <div class="card-title">
+            7-Day Funnel
+            <div id="funnelTotal" style="font-size:.7rem;color:var(--muted);font-weight:400"></div>
+          </div>
           <div id="funnelRows"><div class="loading-overlay"><div class="spinner"></div> Loading funnel…</div></div>
           <div style="margin-top:14px">
             <div class="card-title" style="margin-bottom:8px">Platform Mix</div>
@@ -206,6 +515,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
           </div>
         </div>
       </div>
+
+      <!-- Right column -->
       <div class="insights-col">
         <div class="insight-card">
           <div class="card-title">Today's Insights</div>
@@ -218,10 +529,15 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       </div>
     </div>
   </div>
+
+  <!-- ══ CONVERSATIONS TAB ══ -->
   <div class="tab-panel" id="panel-conversations">
     <div class="conv-layout">
+      <!-- List -->
       <div class="conv-list-wrap">
-        <div class="conv-search"><input type="text" id="convSearch" placeholder="Search by name…"></div>
+        <div class="conv-search">
+          <input type="text" id="convSearch" placeholder="Search by name…">
+        </div>
         <div class="conv-filter">
           <button class="filter-btn active" data-filter="">All</button>
           <button class="filter-btn" data-filter="whatsapp">WhatsApp</button>
@@ -229,28 +545,41 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
           <button class="filter-btn" data-filter="messenger">Messenger</button>
           <button class="filter-btn" data-filter="website">Website</button>
         </div>
-        <div class="conv-list" id="convList"><div class="loading-overlay"><div class="spinner"></div> Loading…</div></div>
+        <div class="conv-list" id="convList">
+          <div class="loading-overlay"><div class="spinner"></div> Loading…</div>
+        </div>
       </div>
+
+      <!-- Chat -->
       <div class="chat-wrap" id="chatWrap">
-        <div class="empty-state"><div class="big-icon">💬</div><p>Select a conversation to view messages</p></div>
+        <div class="empty-state">
+          <div class="big-icon">💬</div>
+          <p>Select a conversation to view messages</p>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- ══ LEADS TAB ══ -->
   <div class="tab-panel" id="panel-leads">
     <div class="leads-layout">
       <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
         <div style="font-size:.8rem;color:var(--muted)">All lead profiles with clinical data</div>
         <input type="text" id="leadSearch" placeholder="Search…" style="background:#1e293b;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:.75rem;color:var(--text);outline:none;width:200px">
       </div>
-      <div class="leads-grid" id="leadsGrid"><div class="loading-overlay"><div class="spinner"></div> Loading profiles…</div></div>
+      <div class="leads-grid" id="leadsGrid">
+        <div class="loading-overlay"><div class="spinner"></div> Loading profiles…</div>
+      </div>
     </div>
   </div>
+
+  <!-- ══ INSIGHTS TAB ══ -->
   <div class="tab-panel" id="panel-insights">
     <div class="insights-layout">
       <div class="insights-header">
         <div>
           <div style="font-size:.9rem;font-weight:700;color:var(--purple-light)">Agent Insights</div>
-          <div style="font-size:.7rem;color:var(--muted);margin-top:2px">Daily analysis from Funnel, Insights &amp; Improvement agents</div>
+          <div style="font-size:.7rem;color:var(--muted);margin-top:2px">Daily analysis from Funnel, Insights & Improvement agents</div>
         </div>
         <div style="display:flex;gap:8px">
           <button class="run-btn" onclick="triggerAgent('funnel')">▶ Run Funnel</button>
@@ -258,16 +587,343 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
           <button class="run-btn" onclick="triggerAgent('improve')">▶ Run Weekly</button>
         </div>
       </div>
-      <div id="insightsContent"><div class="loading-overlay"><div class="spinner"></div> Loading insights…</div></div>
+      <div id="insightsContent">
+        <div class="loading-overlay"><div class="spinner"></div> Loading insights…</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ SYSTEM TAB ══ -->
+  <div class="tab-panel" id="panel-system">
+    <div class="sys-view" style="overflow-y:auto;width:100%;padding:20px 0 40px">
+<h1>🌿 Ayusomam — Full System Architecture</h1>
+<p class="subtitle">Lead journey · Data capture · Funnel intelligence · Self-evolving agents</p>
+
+<!-- ══════════════════════════════════ 1. PLATFORMS ══════════════════════════════════ -->
+<p class="section-label">① Entry Points</p>
+<div class="platforms">
+  <div class="platform-card" style="animation-delay:.0s"><span class="dot" style="background:#25D366"></span>WhatsApp</div>
+  <div class="platform-card" style="animation-delay:.1s"><span class="dot" style="background:#E1306C"></span>Instagram DM</div>
+  <div class="platform-card" style="animation-delay:.2s"><span class="dot" style="background:#0866FF"></span>Messenger</div>
+  <div class="platform-card" style="animation-delay:.3s"><span class="dot" style="background:#94a3b8"></span>Website Chat</div>
+</div>
+
+<div class="connector"><div class="connector-line"></div></div>
+<div class="connector"><div class="connector-dot"></div></div>
+
+<!-- ══════════════════════════════════ 2. STAGE PIPELINE ══════════════════════════════════ -->
+<p class="section-label">② Conversation Stage Pipeline</p>
+<div class="pipeline" id="sys-pipeline">
+  <div class="stage-box s-initiated" style="animation-delay:.0s">
+    <div class="label">Stage 1</div>
+    <div class="name">Initiated</div>
+    <div class="data-badge">name · platform</div>
+  </div>
+  <div class="arrow">›</div>
+  <div class="stage-box s-qualifier" style="animation-delay:.05s">
+    <div class="label">Stage 2</div>
+    <div class="name">Qualifier</div>
+    <div class="data-badge">main symptom</div>
+  </div>
+  <div class="arrow">›</div>
+  <div class="stage-box s-duration" style="animation-delay:.1s">
+    <div class="label">Stage 3</div>
+    <div class="name">Duration</div>
+    <div class="data-badge">weeks / months</div>
+  </div>
+  <div class="arrow">›</div>
+  <div class="stage-box s-discharge" style="animation-delay:.15s">
+    <div class="label">Stage 4</div>
+    <div class="name">Discharge</div>
+    <div class="data-badge">type · colour</div>
+  </div>
+  <div class="arrow">›</div>
+  <div class="stage-box s-reveal" style="animation-delay:.2s">
+    <div class="label">Stage 5</div>
+    <div class="name">Reveal</div>
+    <div class="data-badge">sinus type set</div>
+  </div>
+  <div class="arrow">›</div>
+  <div class="stage-box s-insight" style="animation-delay:.25s">
+    <div class="label">Stage 6</div>
+    <div class="name">Insight</div>
+    <div class="data-badge">Ayurvedic hook</div>
+  </div>
+  <div class="arrow">›</div>
+  <div class="stage-box s-close" style="animation-delay:.3s">
+    <div class="label">Stage 7</div>
+    <div class="name">Close</div>
+    <div class="data-badge">plan + link sent</div>
+  </div>
+  <div class="arrow">⇄</div>
+  <div class="stage-box s-objection" style="animation-delay:.35s">
+    <div class="label">Stage 8</div>
+    <div class="name">Objection</div>
+    <div class="data-badge">objection type</div>
+  </div>
+  <div class="arrow">›</div>
+  <div class="stage-box s-payment" style="animation-delay:.4s">
+    <div class="label">Stage 9</div>
+    <div class="name">Pmt Pending</div>
+    <div class="data-badge">method · screenshot</div>
+  </div>
+  <div class="arrow">›</div>
+  <div class="stage-box s-converted" style="animation-delay:.45s">
+    <div class="active-dot"></div>
+    <div class="label">Stage 10</div>
+    <div class="name">✓ Converted</div>
+    <div class="data-badge">plan · amount · onboarding</div>
+  </div>
+</div>
+
+<div class="connector"><div class="connector-line"></div></div>
+
+<!-- ══════════════════════════════════ 3. LEAD PROFILE ══════════════════════════════════ -->
+<p class="section-label">③ Lead Profile — What Gets Saved</p>
+<div class="lead-profile" id="sys-leadCard">
+  <div class="profile-header">
+    <div class="name" id="sys-profileName">Loading…</div>
+    <div class="stage-pill" id="sys-profileStage">qualifier</div>
+  </div>
+  <div class="profile-grid">
+    <div class="profile-item">
+      <div class="pi-label">Platform</div>
+      <div class="pi-val" id="sys-pi-platform">WhatsApp</div>
+    </div>
+    <div class="profile-item">
+      <div class="pi-label">Language</div>
+      <div class="pi-val" id="sys-pi-lang">Hinglish</div>
+    </div>
+    <div class="profile-item">
+      <div class="pi-label">Main Symptom</div>
+      <div class="pi-val" id="sys-pi-symptom">Sneezing + watery discharge</div>
+    </div>
+    <div class="profile-item">
+      <div class="pi-label">Duration</div>
+      <div class="pi-val" id="sys-pi-duration">3 years (chronic)</div>
+    </div>
+    <div class="profile-item">
+      <div class="pi-label">Sinus Type</div>
+      <div class="pi-val" id="sys-pi-type">Kaphavata Allergic</div>
+    </div>
+    <div class="profile-item">
+      <div class="pi-label">Recommended Plan</div>
+      <div class="pi-val" id="sys-pi-plan">14-Day Core · ₹1,299</div>
+    </div>
+    <div class="profile-item" style="grid-column:1/-1">
+      <div class="pi-label">Clinical Highlights</div>
+      <div id="sys-pi-highlights" style="margin-top:4px">
+        <span class="highlight-tag">DNS</span>
+        <span class="highlight-tag">Morning worse</span>
+        <span class="highlight-tag amber">Seasonal allergy</span>
+        <span class="highlight-tag blue">Failed antihistamines</span>
+        <span class="highlight-tag green">No fever</span>
+      </div>
     </div>
   </div>
 </div>
+
+<div class="connector"><div class="connector-line"></div></div>
+
+<!-- ══════════════════════════════════ 4. FUNNEL ══════════════════════════════════ -->
+<p class="section-label">④ Funnel Analytics — Find the Leaks</p>
+<div class="funnel-wrap" id="sys-funnelWrap">
+  <div class="funnel-row" style="animation-delay:.0s">
+    <div class="funnel-label">Initiated</div>
+    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb0" style="width:0%;background:#1d4ed8">100%</div></div>
+    <div class="funnel-count">248</div>
+  </div>
+  <div class="funnel-row" style="animation-delay:.1s">
+    <div class="funnel-label">Qualifier</div>
+    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb1" style="width:0%;background:#2563eb">82% <span class="drop">▼18%</span></div></div>
+    <div class="funnel-count">203</div>
+  </div>
+  <div class="funnel-row" style="animation-delay:.2s">
+    <div class="funnel-label">Duration</div>
+    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb2" style="width:0%;background:#7c3aed">71%</div></div>
+    <div class="funnel-count">176</div>
+  </div>
+  <div class="funnel-row" style="animation-delay:.3s">
+    <div class="funnel-label">Discharge</div>
+    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb3" style="width:0%;background:#6d28d9">64%</div></div>
+    <div class="funnel-count">159</div>
+  </div>
+  <div class="funnel-row" style="animation-delay:.4s">
+    <div class="funnel-label">Reveal</div>
+    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb4" style="width:0%;background:#5b21b6">58%</div></div>
+    <div class="funnel-count">144</div>
+  </div>
+  <div class="funnel-row" style="animation-delay:.5s">
+    <div class="funnel-label">Close</div>
+    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb5" style="width:0%;background:#b45309">41% <span class="drop">▼17%</span></div></div>
+    <div class="funnel-count">102</div>
+  </div>
+  <div class="funnel-row" style="animation-delay:.6s">
+    <div class="funnel-label">Pmt Pending</div>
+    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb6" style="width:0%;background:#065f46">18%</div></div>
+    <div class="funnel-count">45</div>
+  </div>
+  <div class="funnel-row" style="animation-delay:.7s">
+    <div class="funnel-label" style="color:#34d399">✓ Converted</div>
+    <div class="funnel-bar-wrap"><div class="funnel-bar" id="sys-fb7" style="width:0%;background:#047857">14%</div></div>
+    <div class="funnel-count" style="color:#34d399">35</div>
+  </div>
+</div>
+
+<div class="connector"><div class="connector-line"></div></div>
+
+<!-- ══════════════════════════════════ 5. AGENTS ══════════════════════════════════ -->
+<p class="section-label">⑤ Dedicated Agents</p>
+<div class="agents-grid">
+
+  <div class="agent-card" style="animation-delay:.0s">
+    <div class="pulse-ring"></div>
+    <div class="agent-icon">📊</div>
+    <div class="agent-name">Funnel Agent</div>
+    <div class="agent-freq">Runs: Daily @ 7am</div>
+    <div class="agent-desc">Calculates stage-by-stage drop-offs, identifies the biggest leak in the current 7-day window, and flags it with a fix suggestion.</div>
+    <div class="agent-outputs">
+      <span class="output-tag">drop-off %</span>
+      <span class="output-tag">leak stage</span>
+      <span class="output-tag">fix suggestion</span>
+    </div>
+  </div>
+
+  <div class="agent-card" style="animation-delay:.1s">
+    <div class="pulse-ring"></div>
+    <div class="agent-icon">🔬</div>
+    <div class="agent-name">Insights Agent</div>
+    <div class="agent-freq">Runs: Daily @ 8am</div>
+    <div class="agent-desc">Reads all conversations from the last 24h. Finds patterns — which sinus types come up most, which objections keep repeating, what language converts better.</div>
+    <div class="agent-outputs">
+      <span class="output-tag">top objections</span>
+      <span class="output-tag">winning phrases</span>
+      <span class="output-tag">sinus type mix</span>
+    </div>
+  </div>
+
+  <div class="agent-card" style="animation-delay:.2s">
+    <div class="pulse-ring"></div>
+    <div class="agent-icon">🔁</div>
+    <div class="agent-name">Follow-up Agent</div>
+    <div class="agent-freq">Runs: Every 1hr</div>
+    <div class="agent-desc">Finds leads stuck at a stage for 24h+. Generates a personalised re-engagement message based on their sinus type, name, and last stage reached.</div>
+    <div class="agent-outputs">
+      <span class="output-tag">personalised msg</span>
+      <span class="output-tag">stage-aware</span>
+      <span class="output-tag">name-aware</span>
+    </div>
+  </div>
+
+  <div class="agent-card" style="animation-delay:.3s">
+    <div class="pulse-ring"></div>
+    <div class="agent-icon">🧠</div>
+    <div class="agent-name">Improvement Agent</div>
+    <div class="agent-freq">Runs: Weekly</div>
+    <div class="agent-desc">Compares this week vs last week. Suggests specific prompt edits, new objection handlers, or flow changes. Outputs a ranked improvement list.</div>
+    <div class="agent-outputs">
+      <span class="output-tag">prompt patches</span>
+      <span class="output-tag">A/B suggestions</span>
+      <span class="output-tag">weekly brief</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="connector"><div class="connector-line"></div></div>
+
+<!-- ══════════════════════════════════ 6. SELF-EVOLVE LOOP ══════════════════════════════════ -->
+<p class="section-label">⑥ Self-Evolving Loop</p>
+<div class="evolve-loop">
+  <div class="loop-node" style="border-color:#1d4ed8;color:#93c5fd">📩 New Lead</div>
+  <div class="loop-arrow">→</div>
+  <div class="loop-node" style="border-color:#7c3aed;color:#c4b5fd">🤖 Bot Conversation</div>
+  <div class="loop-arrow">→</div>
+  <div class="loop-node" style="border-color:#065f46;color:#6ee7b7">📦 Data Stored</div>
+  <div class="loop-arrow">→</div>
+  <div class="loop-node" style="border-color:#b45309;color:#fcd34d">📊 Agents Analyse</div>
+  <div class="loop-arrow">→</div>
+  <div class="loop-node" style="border-color:#9f1239;color:#fda4af">💡 Insights Generated</div>
+  <div class="loop-arrow">→</div>
+  <div class="loop-node" style="border-color:#1d4ed8;color:#93c5fd">🔧 Prompt Updated</div>
+  <div class="loop-arrow">→</div>
+  <div class="loop-node" style="border-color:#7c3aed;color:#c4b5fd">📈 Better Conversion</div>
+  <div class="loop-arrow">→</div>
+  <div class="loop-node" style="border-color:#065f46;color:#6ee7b7">🔄 Repeat</div>
+</div>
+
+<div class="connector"><div class="connector-line"></div></div>
+
+<!-- ══════════════════════════════════ 7. TODAY'S INSIGHTS ══════════════════════════════════ -->
+<p class="section-label">⑦ Daily Insights Feed (sample)</p>
+<div class="insights-feed">
+
+  <div class="insight-item" style="animation-delay:.0s;border-color:#f87171">
+    <div class="i-icon">🔴</div>
+    <div>
+      <div class="i-title">Big Leak: Reveal → Close (17% drop)</div>
+      <div class="i-desc">Leads are engaging up to the reveal stage but dropping off before the close. Likely the pitch feels too abrupt after the sinus type reveal. Try adding a bridge message between Insight and Close.</div>
+      <span class="i-action">Apply Fix →</span>
+    </div>
+  </div>
+
+  <div class="insight-item" style="animation-delay:.1s;border-color:#fcd34d">
+    <div class="i-icon">🟡</div>
+    <div>
+      <div class="i-title">Top Objection This Week: "Sochenge" (34 times)</div>
+      <div class="i-desc">The most common objection is "will think about it." The current response may not create enough urgency. Suggested new line: "Bahut log yahi kehte hain — aur 3 mahine baad waapis aate hain worse condition mein."</div>
+      <span class="i-action">Update Prompt →</span>
+    </div>
+  </div>
+
+  <div class="insight-item" style="animation-delay:.2s;border-color:#34d399">
+    <div class="i-icon">🟢</div>
+    <div>
+      <div class="i-title">Kaphavata Type Converts 2× Better</div>
+      <div class="i-desc">Kaphavata allergic leads convert at 28% vs 12% average. The seasonal allergy angle resonates strongly. Consider qualifying for this angle earlier in the flow.</div>
+      <span class="i-action">View Details →</span>
+    </div>
+  </div>
+
+  <div class="insight-item" style="animation-delay:.3s;border-color:#93c5fd">
+    <div class="i-icon">🔵</div>
+    <div>
+      <div class="i-title">Hinglish Outperforms English by 40%</div>
+      <div class="i-desc">Leads who start in hinglish convert at 18% vs 11% for those starting in English. Auto-detection is working, but consider opening with hinglish even for English-starting users.</div>
+      <span class="i-action">A/B Test →</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════ LIVE LOG ══════════════════════════════════ -->
+<p class="section-label" style="margin-top:24px">⑧ Live Activity Log</p>
+<div class="ticker" id="sys-ticker">
+  <span>[Bot]</span> Waiting for messages…<div class="ticker-cursor"></div>
+</div>
+
+<br><br>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
+
 <script>
+// ─────────────────────────────────────────────
+// CONFIG  —  auto-detect base URL
+// ─────────────────────────────────────────────
 const BASE = window.location.origin === 'null' || window.location.origin === 'file://'
-  ? 'https://ayusomam-bot.onrender.com'
+  ? 'https://YOUR-RENDER-URL.onrender.com'   // ← replace when opening as file
   : window.location.origin;
+
 const API = BASE + '/api';
+
+// ─────────────────────────────────────────────
+// UTILITIES
+// ─────────────────────────────────────────────
 async function apiFetch(path) {
   const r = await fetch(API + path);
   if (!r.ok) throw new Error(await r.text());
@@ -280,7 +936,8 @@ async function apiPost(path, body) {
 }
 function toast(msg, type='success') {
   const el = document.getElementById('toast');
-  el.textContent = msg; el.className = `toast ${type} show`;
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
   setTimeout(() => el.className = 'toast', 3000);
 }
 function timeAgo(ts) {
@@ -291,22 +948,32 @@ function timeAgo(ts) {
   if (d < 86400) return Math.floor(d/3600) + 'h ago';
   return Math.floor(d/86400) + 'd ago';
 }
-function platformColor(p) { return {whatsapp:'#25D366',instagram:'#E1306C',messenger:'#0866FF',website:'#64748b'}[p]||'#64748b'; }
-function platformIcon(p) { return {whatsapp:'📱',instagram:'📸',messenger:'💬',website:'🌐'}[p]||'📨'; }
+function platformColor(p) {
+  return {whatsapp:'#25D366',instagram:'#E1306C',messenger:'#0866FF',website:'#64748b'}[p]||'#64748b';
+}
+function platformIcon(p) {
+  return {whatsapp:'📱',instagram:'📸',messenger:'💬',website:'🌐'}[p]||'📨';
+}
 function stageColor(s) {
   const m = {initiated:'#1d4ed8',qualifier:'#2563eb',duration:'#2563eb',discharge:'#7c3aed',reveal:'#6d28d9',insight:'#5b21b6',close:'#d97706',objection:'#92400e',payment_pending:'#065f46',converted:'#059669'};
   return m[s]||'#475569';
 }
 function avatarBg(name) {
   const colors=['#1d4ed8','#7c3aed','#059669','#d97706','#dc2626','#0891b2'];
-  return colors[name ? name.charCodeAt(0) % colors.length : 0];
+  const i = name ? name.charCodeAt(0) % colors.length : 0;
+  return colors[i];
 }
 function initials(name) {
   if (!name) return '?';
   return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
 }
+
+// ─────────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────────
 document.querySelectorAll('.tab').forEach(t => {
   t.addEventListener('click', () => {
+    if (t.dataset.tab === 'system') setTimeout(initSystemTab, 50);
     document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
@@ -316,26 +983,37 @@ document.querySelectorAll('.tab').forEach(t => {
     if (t.dataset.tab === 'insights') loadInsights();
   });
 });
+
+// ─────────────────────────────────────────────
+// STATS
+// ─────────────────────────────────────────────
 async function loadStats() {
   try {
     const d = await apiFetch('/stats');
-    document.getElementById('statTotal').textContent = d.total;
-    document.getElementById('statToday').textContent = d.today;
+    document.getElementById('statTotal').textContent     = d.total;
+    document.getElementById('statToday').textContent     = d.today;
     document.getElementById('statConverted').textContent = d.converted;
-    document.getElementById('statPending').textContent = d.pending;
+    document.getElementById('statPending').textContent   = d.pending;
     const rate = d.total > 0 ? (d.converted/d.total*100).toFixed(1) : 0;
-    document.getElementById('statConvRate').textContent = `${rate}% conversion`;
-    document.getElementById('barConverted').style.width = rate + '%';
-    document.getElementById('barToday').style.width = Math.min(100, d.today/Math.max(d.total,1)*100*5) + '%';
+    document.getElementById('statConvRate').textContent  = `${rate}% conversion`;
+    document.getElementById('barConverted').style.width  = rate + '%';
+    document.getElementById('barToday').style.width      = Math.min(100, d.today/Math.max(d.total,1)*100*5) + '%';
+
+    // Platform pills
     const pills = document.getElementById('platformPills');
     pills.innerHTML = Object.entries(d.platforms||{}).map(([p,c]) =>
       `<div class="plat-pill"><div class="plat-dot" style="background:${platformColor(p)}"></div>${platformIcon(p)} ${p} <strong>${c}</strong></div>`
     ).join('');
+
     document.getElementById('lastRefresh').textContent = 'Updated ' + new Date().toLocaleTimeString();
   } catch(e) {
-    document.getElementById('lastRefresh').textContent = 'API unreachable';
+    document.getElementById('lastRefresh').textContent = 'API unreachable — check Render URL';
   }
 }
+
+// ─────────────────────────────────────────────
+// FUNNEL
+// ─────────────────────────────────────────────
 const FUNNEL_COLORS = ['#1d4ed8','#2563eb','#2563eb','#7c3aed','#6d28d9','#5b21b6','#d97706','#92400e','#065f46','#059669'];
 async function loadFunnel() {
   try {
@@ -346,83 +1024,153 @@ async function loadFunnel() {
       const prev = i > 0 ? d.rows[i-1].pct : 100;
       const drop = prev > 0 && r.pct < prev ? `<span class="f-drop">▼${prev-r.pct}%</span>` : '';
       const isLeak = prev-r.pct >= 15 ? ' style="box-shadow:0 0 0 2px #dc262688 inset"' : '';
-      html += `<div class="funnel-row"><div class="f-label">${r.stage.replace('_',' ')}</div><div class="f-bar-wrap"${isLeak}><div class="f-bar" id="fb${i}" style="width:0%;background:${FUNNEL_COLORS[i]}"><span class="f-pct">${r.pct}%</span>${drop}</div></div><div class="f-count">${r.count}</div></div>`;
+      html += `<div class="funnel-row">
+        <div class="f-label">${r.stage.replace('_',' ')}</div>
+        <div class="f-bar-wrap"${isLeak}>
+          <div class="f-bar" id="fb${i}" style="width:0%;background:${FUNNEL_COLORS[i]}">
+            <span class="f-pct">${r.pct}%</span>${drop}
+          </div>
+        </div>
+        <div class="f-count">${r.count}</div>
+      </div>`;
     });
     document.getElementById('funnelRows').innerHTML = html;
-    setTimeout(() => d.rows.forEach((r,i) => { const el = document.getElementById('fb'+i); if (el) el.style.width = Math.max(r.pct,4)+'%'; }), 100);
+    // Animate bars
+    setTimeout(() => d.rows.forEach((r,i) => {
+      const el = document.getElementById('fb'+i);
+      if (el) el.style.width = Math.max(r.pct, 4) + '%';
+    }), 100);
   } catch(e) {
-    document.getElementById('funnelRows').innerHTML = `<div style="color:var(--muted);font-size:.75rem;padding:8px">No funnel data yet.</div>`;
+    document.getElementById('funnelRows').innerHTML = `<div style="color:var(--muted);font-size:.75rem;padding:8px">No funnel data yet. Run the Funnel Agent to generate.</div>`;
   }
 }
+
+// ─────────────────────────────────────────────
+// OVERVIEW INSIGHTS
+// ─────────────────────────────────────────────
 async function loadOverviewInsights() {
   try {
     const data = await apiFetch('/insights');
     const today = data[0];
-    if (!today) { document.getElementById('overviewInsights').innerHTML = '<div style="color:var(--muted);font-size:.75rem;padding:8px">No insights yet. Run agents from Insights tab.</div>'; return; }
+    if (!today) {
+      document.getElementById('overviewInsights').innerHTML = '<div style="color:var(--muted);font-size:.75rem;padding:8px">No insights yet. Run the agents from the Insights tab.</div>';
+      return;
+    }
     const suggs = today.suggestions || [];
     const objections = today.top_objections || [];
     let html = '';
-    if (suggs.length) html += suggs.slice(0,3).map(s => `<div class="insight-item"><div class="i-icon">${s.priority<=3?'🔴':s.priority<=6?'🟡':'🔵'}</div><div><div class="i-title">${s.action||'Improvement'}</div><div class="i-desc">${s.suggestion}</div></div></div>`).join('');
-    if (objections.length) html += `<div class="insight-item"><div class="i-icon">⚠️</div><div><div class="i-title">Top Objection: "${objections[0].text}"</div><div class="i-desc">Seen ${objections[0].count} times.</div></div></div>`;
+    if (suggs.length) {
+      html += suggs.slice(0,3).map(s => `
+        <div class="insight-item">
+          <div class="i-icon">${s.priority <= 3 ? '🔴' : s.priority <= 6 ? '🟡' : '🔵'}</div>
+          <div>
+            <div class="i-title">${s.action||'Improvement'}</div>
+            <div class="i-desc">${s.suggestion}</div>
+          </div>
+        </div>`).join('');
+    }
+    if (objections.length) {
+      html += `<div class="insight-item"><div class="i-icon">⚠️</div><div>
+        <div class="i-title">Top Objection: "${objections[0].text}"</div>
+        <div class="i-desc">Seen ${objections[0].count} times. ${objections.length > 1 ? 'Also: "'+objections[1].text+'"' : ''}</div>
+      </div></div>`;
+    }
     if (!html) html = '<div style="color:var(--muted);font-size:.75rem;padding:8px">Agents are collecting data.</div>';
     document.getElementById('overviewInsights').innerHTML = html;
+
+    // Agent status
     const rate = today.conversion_rate || 0;
     document.getElementById('agentStatus').innerHTML = `
-      <div style="display:flex;justify-content:space-between;font-size:.72rem;padding:6px 0;border-bottom:1px solid var(--border)"><span>📊 Funnel Agent</span><span style="color:var(--green-light)">Last: ${today.report_date}</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:.72rem;padding:6px 0;border-bottom:1px solid var(--border)"><span>🔬 Insights Agent</span><span style="color:var(--green-light)">Last: ${today.report_date}</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:.72rem;padding:6px 0"><span>📈 Conversion Rate</span><span style="color:${rate>15?'var(--green-light)':'#fcd34d'};font-weight:700">${rate}%</span></div>`;
+      <div style="display:flex;justify-content:space-between;font-size:.72rem;padding:6px 0;border-bottom:1px solid var(--border)">
+        <span>📊 Funnel Agent</span><span style="color:var(--green-light)">Last: ${today.report_date}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.72rem;padding:6px 0;border-bottom:1px solid var(--border)">
+        <span>🔬 Insights Agent</span><span style="color:var(--green-light)">Last: ${today.report_date}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.72rem;padding:6px 0">
+        <span>📈 Conversion Rate</span><span style="color:${rate>15?'var(--green-light)':'#fcd34d'};font-weight:700">${rate}%</span>
+      </div>`;
   } catch(e) {
     document.getElementById('overviewInsights').innerHTML = '<div style="color:var(--muted);font-size:.75rem;padding:8px">Run agents to see insights.</div>';
   }
 }
-let activeConvId = null, convFilter = '', convSearch = '', pollTimer = null;
+
+// ─────────────────────────────────────────────
+// CONVERSATIONS
+// ─────────────────────────────────────────────
+let activeConvId = null;
+let convFilter = '';
+let convSearch = '';
+let pollTimer = null;
+
 async function loadConversations() {
   try {
     let url = `/conversations?limit=50`;
     if (convFilter) url += `&platform=${convFilter}`;
-    if (convSearch) url += `&search=${encodeURIComponent(convSearch)}`;
+    if (convSearch)  url += `&search=${encodeURIComponent(convSearch)}`;
     const d = await apiFetch(url);
     renderConvList(d.conversations || []);
-  } catch(e) { document.getElementById('convList').innerHTML = `<div class="loading-overlay" style="color:var(--red)">Error loading</div>`; }
+  } catch(e) {
+    document.getElementById('convList').innerHTML = `<div class="loading-overlay" style="color:var(--red)">Error loading conversations</div>`;
+  }
 }
+
 function renderConvList(convs) {
-  if (!convs.length) { document.getElementById('convList').innerHTML = '<div class="loading-overlay">No conversations found</div>'; return; }
+  if (!convs.length) {
+    document.getElementById('convList').innerHTML = '<div class="loading-overlay">No conversations found</div>';
+    return;
+  }
   document.getElementById('convList').innerHTML = convs.map(c => {
     const isActive = c.id === activeConvId;
-    const stageClass = c.stage==='converted'?'badge-converted':c.stage==='payment_pending'?'badge-pending':'badge-stage';
+    const stageClass = c.stage === 'converted' ? 'badge-converted' : c.stage === 'payment_pending' ? 'badge-pending' : 'badge-stage';
     return `<div class="conv-item ${isActive?'active':''}" onclick="openConversation('${c.id}')">
       <div class="conv-avatar" style="background:${avatarBg(c.name)}">${initials(c.name)}</div>
       <div class="conv-meta">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <div class="conv-name">${c.name||c.user_id||'Unknown'}</div>
+          <div class="conv-name">${c.name || c.user_id || 'Unknown'}</div>
           <div class="conv-time">${timeAgo(c.last_message_at)}</div>
         </div>
-        <div class="conv-preview">${c.lead_profiles?.notes||c.sinus_type?.replace(/_/g,' ')||'No profile yet'}</div>
+        <div class="conv-preview">${c.lead_profiles?.notes || c.sinus_type?.replace(/_/g,' ') || 'No profile yet'}</div>
         <div class="conv-badges">
           <span class="badge ${stageClass}">${c.stage.replace(/_/g,' ')}</span>
           <span class="badge badge-platform" style="color:${platformColor(c.platform)};border-color:${platformColor(c.platform)}44">${platformIcon(c.platform)} ${c.platform}</span>
-          ${c.language!=='hinglish'?`<span class="badge badge-stage">${c.language}</span>`:''}
+          ${c.language !== 'hinglish' ? `<span class="badge badge-stage">${c.language}</span>` : ''}
         </div>
-      </div></div>`;
+      </div>
+    </div>`;
   }).join('');
 }
+
 async function openConversation(id) {
   activeConvId = id;
-  document.querySelectorAll('.conv-item').forEach(el => { el.classList.toggle('active', el.getAttribute('onclick')?.includes(id)); });
+  // Highlight in list
+  document.querySelectorAll('.conv-item').forEach(el => {
+    el.classList.toggle('active', el.onclick.toString().includes(id));
+  });
   await renderChat(id);
+  // Poll for new messages
   if (pollTimer) clearInterval(pollTimer);
   pollTimer = setInterval(() => renderChat(id, true), 8000);
 }
+
 async function renderChat(id, silent=false) {
   try {
     const d = await apiFetch(`/conversations/${id}`);
-    const conv = d.conversation, msgs = d.messages||[], profile = conv.lead_profiles;
+    const conv = d.conversation;
+    const msgs = d.messages || [];
+    const profile = conv.lead_profiles;
+
+    // Profile strip
     const highlights = (profile?.highlights||[]).map((h,i)=>`<span class="highlight-chip ${['hc-red','hc-blue','hc-amber','hc-green'][i%4]}">${h}</span>`).join('');
+
     const chatHTML = `
       <div class="chat-header">
         <div class="chat-header-info">
           <div class="conv-avatar" style="background:${avatarBg(conv.name)};width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700">${initials(conv.name)}</div>
-          <div><div class="chat-header-name">${conv.name||conv.user_id}</div><div class="chat-header-sub">${platformIcon(conv.platform)} ${conv.platform} · ${conv.stage.replace(/_/g,' ')} · ${conv.language}</div></div>
+          <div>
+            <div class="chat-header-name">${conv.name||conv.user_id}</div>
+            <div class="chat-header-sub">${platformIcon(conv.platform)} ${conv.platform} · ${conv.stage.replace(/_/g,' ')} · ${conv.language}</div>
+          </div>
         </div>
         <div class="chat-actions">
           ${conv.stage==='payment_pending'?`<button class="action-btn success" onclick="markConverted('${id}','${conv.plan||'starter_499'}')">✓ Confirm Payment</button>`:''}
@@ -430,62 +1178,102 @@ async function renderChat(id, silent=false) {
         </div>
       </div>
       <div class="profile-strip">
-        ${profile?.sinus_type||conv.sinus_type?`<div class="ps-item"><div class="ps-label">Sinus Type</div><div class="ps-val">${(profile?.sinus_type||conv.sinus_type||'').replace(/_/g,' ')}</div></div>`:''}
-        ${profile?.duration_text?`<div class="ps-item"><div class="ps-label">Duration</div><div class="ps-val">${profile.duration_text}</div></div>`:''}
-        ${profile?.severity?`<div class="ps-item"><div class="ps-label">Severity</div><div class="ps-val">${profile.severity}</div></div>`:''}
-        ${conv.plan?`<div class="ps-item"><div class="ps-label">Plan</div><div class="ps-val" style="color:var(--green-light)">${conv.plan==='core_1299'?'14-Day Core ₹1,299':'7-Day Starter ₹499'}</div></div>`:''}
-        ${highlights?`<div class="ps-item"><div class="ps-label">Highlights</div><div class="ps-val">${highlights}</div></div>`:''}
+        ${profile?.sinus_type||conv.sinus_type ? `<div class="ps-item"><div class="ps-label">Sinus Type</div><div class="ps-val">${(profile?.sinus_type||conv.sinus_type||'').replace(/_/g,' ')}</div></div>` : ''}
+        ${profile?.duration_text ? `<div class="ps-item"><div class="ps-label">Duration</div><div class="ps-val">${profile.duration_text}</div></div>` : ''}
+        ${profile?.severity ? `<div class="ps-item"><div class="ps-label">Severity</div><div class="ps-val">${profile.severity}</div></div>` : ''}
+        ${conv.plan ? `<div class="ps-item"><div class="ps-label">Plan</div><div class="ps-val" style="color:var(--green-light)">${conv.plan==='core_1299'?'14-Day Core ₹1,299':'7-Day Starter ₹499'}</div></div>` : ''}
+        ${highlights ? `<div class="ps-item"><div class="ps-label">Highlights</div><div class="ps-val">${highlights}</div></div>` : ''}
       </div>
       <div class="messages-area" id="msgArea">
-        ${msgs.length===0?'<div class="empty-state" style="flex:1"><div class="big-icon">📭</div><p>No messages yet</p></div>':
-          msgs.map(m=>`<div class="msg ${m.role}" style="max-width:75%"><div style="display:flex;flex-direction:column"><div class="msg-bubble">${escapeHtml(m.content)}</div><div class="msg-time">${new Date(m.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div></div>`).join('')}
+        ${msgs.length===0 ? '<div class="empty-state" style="flex:1"><div class="big-icon">📭</div><p>No messages yet</p></div>' :
+          msgs.map(m=>`
+            <div class="msg ${m.role}" style="max-width:75%">
+              <div style="display:flex;flex-direction:column">
+                <div class="msg-bubble">${escapeHtml(m.content)}</div>
+                <div class="msg-time">${new Date(m.created_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>
+              </div>
+            </div>`).join('')}
       </div>
       <div class="reply-bar">
         <textarea id="replyText" placeholder="Type a message… (Ctrl+Enter to send)"></textarea>
         <button class="send-btn" id="sendBtn" onclick="sendReply('${id}','${conv.platform}')">Send</button>
       </div>`;
+
     document.getElementById('chatWrap').innerHTML = chatHTML;
+
+    // Scroll to bottom
     const area = document.getElementById('msgArea');
     if (area) area.scrollTop = area.scrollHeight;
+
+    // Ctrl+Enter to send
     const ta = document.getElementById('replyText');
-    if (ta) ta.addEventListener('keydown', e => { if (e.ctrlKey && e.key==='Enter') sendReply(id, conv.platform); });
-  } catch(e) { if (!silent) document.getElementById('chatWrap').innerHTML = `<div class="empty-state"><div class="big-icon">⚠️</div><p>${e.message}</p></div>`; }
+    if (ta) ta.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') sendReply(id, conv.platform);
+    });
+  } catch(e) {
+    if (!silent) document.getElementById('chatWrap').innerHTML = `<div class="empty-state"><div class="big-icon">⚠️</div><p>${e.message}</p></div>`;
+  }
 }
+
 async function sendReply(convId, platform) {
-  const ta = document.getElementById('replyText'), btn = document.getElementById('sendBtn');
+  const ta = document.getElementById('replyText');
+  const btn = document.getElementById('sendBtn');
   const text = ta?.value?.trim();
   if (!text) return;
   btn.disabled = true; btn.textContent = 'Sending…';
   try {
     await apiPost(`/conversations/${convId}/reply`, { text });
-    ta.value = ''; toast(`Sent via ${platform} ✓`); await renderChat(convId);
-  } catch(e) { toast('Send failed: '+e.message,'error'); }
-  finally { btn.disabled = false; btn.textContent = 'Send'; }
+    ta.value = '';
+    toast(`Sent via ${platform} ✓`);
+    await renderChat(convId);
+  } catch(e) {
+    toast('Send failed: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send';
+  }
 }
+
 async function markConverted(convId, plan) {
   try {
     await apiPost(`/conversations/${convId}/mark-converted`, { plan });
-    toast('Marked as converted ✓'); await renderChat(convId); loadStats(); loadConversations();
+    toast('Marked as converted ✓');
+    await renderChat(convId);
+    loadStats();
+    loadConversations();
   } catch(e) { toast('Error: '+e.message,'error'); }
 }
+
+// Filter buttons
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active'); convFilter = btn.dataset.filter; loadConversations();
+    btn.classList.add('active');
+    convFilter = btn.dataset.filter;
+    loadConversations();
   });
 });
 document.getElementById('convSearch')?.addEventListener('input', e => {
-  convSearch = e.target.value; clearTimeout(window.searchTimer);
+  convSearch = e.target.value;
+  clearTimeout(window.searchTimer);
   window.searchTimer = setTimeout(loadConversations, 400);
 });
-function escapeHtml(t) { return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+function escapeHtml(t) {
+  return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+// ─────────────────────────────────────────────
+// LEADS TAB
+// ─────────────────────────────────────────────
 let allLeads = [];
 async function loadLeads() {
   try {
     const d = await apiFetch('/conversations?limit=100');
-    allLeads = d.conversations||[]; renderLeads(allLeads);
+    allLeads = d.conversations || [];
+    renderLeads(allLeads);
   } catch(e) { document.getElementById('leadsGrid').innerHTML = `<div style="color:var(--red);padding:20px">${e.message}</div>`; }
 }
+
 function renderLeads(leads) {
   if (!leads.length) { document.getElementById('leadsGrid').innerHTML = '<div style="color:var(--muted);padding:20px">No leads found</div>'; return; }
   document.getElementById('leadsGrid').innerHTML = leads.map(c => {
@@ -504,49 +1292,175 @@ function renderLeads(leads) {
         <div class="lc-item"><div class="lc-label">Language</div><div class="lc-val">${c.language}</div></div>
         <div class="lc-item"><div class="lc-label">Sinus Type</div><div class="lc-val">${(p?.sinus_type||c.sinus_type||'—').replace(/_/g,' ')}</div></div>
         <div class="lc-item"><div class="lc-label">Duration</div><div class="lc-val">${p?.duration_text||'—'}</div></div>
-        ${p?.symptoms?.length?`<div class="lc-item" style="grid-column:1/-1"><div class="lc-label">Symptoms</div><div class="lc-val">${(p.symptoms||[]).slice(0,3).join(', ')}</div></div>`:''}
-        ${highlights?`<div class="lc-highlights"><div class="lc-label" style="margin-bottom:4px">Highlights</div>${highlights}</div>`:''}
+        ${p?.symptoms?.length ? `<div class="lc-item" style="grid-column:1/-1"><div class="lc-label">Symptoms</div><div class="lc-val">${(p.symptoms||[]).slice(0,3).join(', ')}</div></div>` : ''}
+        ${highlights ? `<div class="lc-highlights"><div class="lc-label" style="margin-bottom:4px">Highlights</div>${highlights}</div>` : ''}
       </div>
       <div style="margin-top:8px;font-size:.65rem;color:var(--muted)">${timeAgo(c.last_message_at)} · ${c.message_count||0} messages</div>
     </div>`;
   }).join('');
 }
+
 document.getElementById('leadSearch')?.addEventListener('input', e => {
   const q = e.target.value.toLowerCase();
-  renderLeads(q ? allLeads.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.sinus_type||'').includes(q)) : allLeads);
+  renderLeads(q ? allLeads.filter(c => (c.name||'').toLowerCase().includes(q) || (c.sinus_type||'').includes(q)) : allLeads);
 });
+
 function switchToConv(id) {
   document.querySelector('[data-tab="conversations"]').click();
   setTimeout(() => { loadConversations().then(() => openConversation(id)); }, 100);
 }
+
+// ─────────────────────────────────────────────
+// INSIGHTS TAB
+// ─────────────────────────────────────────────
 async function loadInsights() {
   try {
     const data = await apiFetch('/insights');
-    if (!data.length) { document.getElementById('insightsContent').innerHTML = `<div class="loading-overlay">No insights yet. Click Run above.</div>`; return; }
+    if (!data.length) {
+      document.getElementById('insightsContent').innerHTML = `<div class="loading-overlay">No insights yet. Click "Run" above to generate your first report.</div>`;
+      return;
+    }
     document.getElementById('insightsContent').innerHTML = data.map(ins => `
       <div style="margin-bottom:16px">
         <div style="font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px">
           📅 ${ins.report_date}
-          ${ins.conversion_rate?`<span style="color:${ins.conversion_rate>15?'var(--green-light)':'#fcd34d'};background:#1e293b;border:1px solid var(--border);padding:2px 8px;border-radius:999px">${ins.conversion_rate}% conversion</span>`:''}
+          ${ins.conversion_rate ? `<span style="color:${ins.conversion_rate>15?'var(--green-light)':'#fcd34d'};background:#1e293b;border:1px solid var(--border);padding:2px 8px;border-radius:999px">${ins.conversion_rate}% conversion</span>` : ''}
         </div>
         <div class="ins-grid">
-          ${ins.funnel_summary?`<div class="ins-card"><div class="card-title">Funnel</div><div style="font-size:.72rem;color:var(--muted)">${JSON.stringify(ins.funnel_summary?.biggestLeak||{}).replace(/["{}]/g,'').replace(/,/g,' · ')}</div></div>`:''}
-          ${ins.top_objections?.length?`<div class="ins-card"><div class="card-title">Top Objections</div>${(ins.top_objections||[]).map(o=>`<div style="display:flex;justify-content:space-between;font-size:.72rem;padding:4px 0;border-bottom:1px solid var(--border)"><span>"${o.text}"</span><span style="color:var(--red)">${o.count}×</span></div>`).join('')}</div>`:''}
+          ${ins.funnel_summary ? `<div class="ins-card">
+            <div class="card-title">Funnel</div>
+            <div style="font-size:.72rem;color:var(--muted)">${JSON.stringify(ins.funnel_summary?.biggestLeak||{}).replace(/["{}]/g,'').replace(/,/g,' · ')}</div>
+          </div>` : ''}
+          ${ins.top_objections?.length ? `<div class="ins-card">
+            <div class="card-title">Top Objections</div>
+            ${(ins.top_objections||[]).map(o=>`<div style="display:flex;justify-content:space-between;font-size:.72rem;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text)">"${o.text}"</span><span style="color:var(--red)">${o.count}×</span></div>`).join('')}
+          </div>` : ''}
         </div>
-        ${ins.suggestions?.length?`<div class="ins-card"><div class="card-title">Improvement Suggestions</div>${(ins.suggestions||[]).map(s=>`<div class="suggestion-item"><div class="sug-rank">${s.priority||'?'}</div><div><div class="sug-area">${s.area||'general'}</div><div class="sug-text">${s.suggestion}</div></div></div>`).join('')}</div>`:''}
+        ${ins.suggestions?.length ? `<div class="ins-card">
+          <div class="card-title">Improvement Suggestions</div>
+          ${(ins.suggestions||[]).map(s=>`<div class="suggestion-item">
+            <div class="sug-rank">${s.priority||'?'}</div>
+            <div>
+              <div class="sug-area">${s.area||'general'}</div>
+              <div class="sug-text">${s.suggestion}</div>
+            </div>
+          </div>`).join('')}
+        </div>` : ''}
       </div>`).join('<hr style="border:none;border-top:1px solid var(--border);margin:16px 0">');
-  } catch(e) { document.getElementById('insightsContent').innerHTML = `<div style="color:var(--red);padding:20px">${e.message}</div>`; }
+  } catch(e) {
+    document.getElementById('insightsContent').innerHTML = `<div style="color:var(--red);padding:20px">${e.message}</div>`;
+  }
 }
+
 async function triggerAgent(type) {
   toast(`Running ${type} agent…`);
   try {
     await apiFetch(`/insights/trigger/${type}`);
-    toast(`${type} agent completed ✓`); loadInsights(); loadOverviewInsights(); loadFunnel();
+    toast(`${type} agent completed ✓`);
+    loadInsights();
+    loadOverviewInsights();
+    loadFunnel();
   } catch(e) { toast('Error: '+e.message,'error'); }
 }
-async function fullRefresh() { await Promise.all([loadStats(), loadFunnel(), loadOverviewInsights()]); }
+
+// ─────────────────────────────────────────────
+// INITIAL LOAD + AUTO-REFRESH
+// ─────────────────────────────────────────────
+async function fullRefresh() {
+  await Promise.all([loadStats(), loadFunnel(), loadOverviewInsights()]);
+}
 fullRefresh();
-setInterval(fullRefresh, 30000);
+setInterval(fullRefresh, 30000); // refresh every 30s
+
+
+// ─── SYSTEM TAB INIT ───
+let sysTabInitialized = false;
+function initSystemTab() {
+  if (sysTabInitialized) return;
+  sysTabInitialized = true;
+
+// ── Animate funnel bars ──
+const bars = [
+  {id:'sys-fb0', w:100}, {id:'sys-fb1', w:82}, {id:'sys-fb2', w:71}, {id:'sys-fb3', w:64},
+  {id:'sys-fb4', w:58},  {id:'sys-fb5', w:41}, {id:'sys-fb6', w:18}, {id:'sys-fb7', w:14},
+];
+setTimeout(() => {
+  bars.forEach((b,i) => setTimeout(() => {
+    const el = document.getElementById(b.id);
+    if (el) el.style.width = b.w + '%';
+  }, i * 120));
+}, 500);
+
+// ── Animate active dot through stages ──
+const stageIds = ['s-initiated','s-qualifier','s-duration','s-discharge','s-reveal','s-insight','s-close','s-objection','s-payment','s-converted'];
+let stageIdx = 0;
+const pipelineBoxes = document.querySelectorAll('#sys-pipeline .stage-box');
+function moveActiveDot() {
+  pipelineBoxes.forEach(b => { const d = b.querySelector('.active-dot'); if(d) d.remove(); });
+  const box = pipelineBoxes[stageIdx];
+  if (box) { const dot = document.createElement('div'); dot.className='active-dot'; box.appendChild(dot); }
+  stageIdx = (stageIdx + 1) % pipelineBoxes.length;
+}
+moveActiveDot();
+setInterval(moveActiveDot, 1800);
+
+// ── Cycle lead profile ──
+const leads = [
+  { name:'Rahul Sharma', stage:'close', platform:'WhatsApp', lang:'Hinglish', symptom:'Sneezing + watery discharge', dur:'3 years', type:'Kaphavata Allergic', plan:'14-Day Core · ₹1,299', highlights:['DNS','Morning worse','Seasonal allergy','Failed antihistamines','No fever'] },
+  { name:'Priya Mehta',  stage:'reveal', platform:'Instagram', lang:'Hindi', symptom:'Thick yellow discharge + facial pain', dur:'8 months', type:'Pitta Inflammatory', plan:'14-Day Core · ₹1,299', highlights:['Facial pressure','Evening worse','Spicy food trigger'] },
+  { name:'Deepak Nair',  stage:'qualifier', platform:'Messenger', lang:'English', symptom:'Heavy congestion + post-meal worse', dur:'2 months', type:'Kapha Congestive', plan:'7-Day Starter · ₹499', highlights:['Post-meal congestion','No fever','Winter worse'] },
+  { name:'Anjali Patel', stage:'converted', platform:'WhatsApp', lang:'Hinglish', symptom:'Dry sinuses + one-sided headache', dur:'6 months', type:'Vata Dry', plan:'7-Day Starter · ₹499', highlights:['No discharge','Wind sensitive','One-sided pain','AC office'] },
+];
+let lIdx = 0;
+function cycleLead() {
+  const l = leads[lIdx % leads.length]; lIdx++;
+  document.getElementById('sys-profileName').textContent  = l.name;
+  document.getElementById('sys-profileStage').textContent = l.stage;
+  document.getElementById('sys-pi-platform').textContent  = l.platform;
+  document.getElementById('sys-pi-lang').textContent      = l.lang;
+  document.getElementById('sys-pi-symptom').textContent   = l.symptom;
+  document.getElementById('sys-pi-duration').textContent  = l.dur;
+  document.getElementById('sys-pi-type').textContent      = l.type;
+  document.getElementById('sys-pi-plan').textContent      = l.plan;
+  const hEl = document.getElementById('sys-pi-highlights');
+  const colors = ['','blue','green','amber','blue',''];
+  hEl.innerHTML = l.highlights.map((h,i) => `<span class="highlight-tag ${colors[i%colors.length]}">${h}</span>`).join('');
+}
+cycleLead();
+setInterval(() => { document.getElementById('sys-leadCard').style.opacity='0.3'; setTimeout(() => { cycleLead(); document.getElementById('sys-leadCard').style.opacity='1'; }, 400); }, 3500);
+document.getElementById('sys-leadCard').style.transition='opacity .4s';
+
+// ── Live log ticker ──
+const logs = [
+  '[WhatsApp] Rahul Sharma (9876543210): "naak bahut band rehti hai"',
+  '[Bot] Language detected: hinglish · Stage: initiated → qualifier',
+  '[Bot] Name detected: "Rahul" (source: meta) · Saved to Supabase',
+  '[WhatsApp] Rahul: "teen saal se hai" → Stage: duration → discharge',
+  '[Bot] Duration captured: "3 years" · Flagged: chronic',
+  '[Bot] Sinus type detected: kaphavata_allergic · Plan: core_1299',
+  '[WhatsApp] Priya Mehta (9834567123): "mota peela discharge aata hai"',
+  '[Instagram] Deepak Nair sent a message · Fetching name from Graph API…',
+  '[Instagram] Name resolved: "Deepak Nair" · Stage: initiated',
+  '[Bot] Payment screenshot received from Anjali Patel · Stage → payment_pending',
+  '[FunnelAgent] Ran at 07:00 · Biggest leak: Reveal→Close (17%) · Suggestion saved',
+  '[InsightsAgent] Analysed 47 conversations · Top objection: "sochenge" (34×)',
+  '[FollowUp] Sent to 3 stale leads (silent 24h+) · Personalised by sinus type',
+  '[Razorpay] pay_Qx9sZ7mAbC3d4e confirmed · Rahul → converted · Onboarding sent',
+];
+let tIdx = 0;
+const ticker = document.getElementById('sys-ticker');
+function nextLog() {
+  const log = logs[tIdx % logs.length]; tIdx++;
+  const parts = log.split(' ');
+  const tag = parts.shift();
+  const color = tag.startsWith('[Bot]') ? '#a78bfa' : tag.startsWith('[Razorpay]') ? '#34d399' : tag.startsWith('[Funnel') || tag.startsWith('[Insights') ? '#fcd34d' : tag.startsWith('[Follow') ? '#93c5fd' : '#f87171';
+  ticker.innerHTML = `<span style="color:${color}">${tag}</span> ${parts.join(' ')}<div class="ticker-cursor"></div>`;
+}
+nextLog();
+setInterval(nextLog, 2800);
+
+}
+
 </script>
 </body>
 </html>
