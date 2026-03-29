@@ -88,7 +88,20 @@ router.get("/conversations", async (req, res) => {
     }
 
     if (error) return res.status(500).json({error: error.message});
-    res.json({ conversations: data||[], total: (data||[]).length });
+    // Enrich each conversation with the last message preview
+    const convList = data || [];
+    if (convList.length > 0) {
+      const ids = convList.map(c => c.id);
+      const { data: lastMsgs } = await supabase
+        .from('messages')
+        .select('conversation_id, content, created_at')
+        .in('conversation_id', ids)
+        .order('created_at', { ascending: false });
+      const lastMap = {};
+      (lastMsgs || []).forEach(m => { if (!lastMap[m.conversation_id]) lastMap[m.conversation_id] = m.content; });
+      convList.forEach(c => { c.last_message_preview = (lastMap[c.id]||'').slice(0,120) || null; });
+    }
+    res.json({ conversations: convList, total: convList.length });
   } catch(err) { res.status(500).json({error: err.message}); }
 });
 
