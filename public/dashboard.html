@@ -566,10 +566,25 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="panel-section">
       <div class="sec-title"><div class="dot"></div>Agents</div>
       <div id="agentRows">
-        <div class="agent-row"><div class="a-dot idle"></div><div class="a-info"><div class="a-name">📊 Funnel Agent</div><div class="a-next">Daily @ 7am</div></div><button class="a-trigger" onclick="triggerAgent('funnel')">▶ Run</button></div>
-        <div class="agent-row"><div class="a-dot idle"></div><div class="a-info"><div class="a-name">🔬 Insights Agent</div><div class="a-next">Daily @ 8am</div></div><button class="a-trigger" onclick="triggerAgent('insights')">▶ Run</button></div>
-        <div class="agent-row"><div class="a-dot idle"></div><div class="a-info"><div class="a-name">🔁 Follow-up Agent</div><div class="a-next">Every 1hr</div></div><button class="a-trigger" onclick="triggerAgent('followup')">▶ Run</button></div>
-        <div class="agent-row"><div class="a-dot idle"></div><div class="a-info"><div class="a-name">🧠 Improvement Agent</div><div class="a-next">Weekly</div></div><button class="a-trigger" onclick="triggerAgent('improvement')">▶ Run</button></div>
+        <div class="agent-row"><div class="a-dot idle" id="adot-fa"></div><div class="a-info"><div class="a-name">📊 Funnel Agent</div><div class="a-next" id="anext-fa">Daily @ 7am</div></div><button class="a-trigger" onclick="triggerAgent('funnel')">▶ Run</button></div>
+        <div class="agent-row"><div class="a-dot idle" id="adot-ia"></div><div class="a-info"><div class="a-name">🔬 Insights Agent</div><div class="a-next" id="anext-ia">Daily @ 8am</div></div><button class="a-trigger" onclick="triggerAgent('insights')">▶ Run</button></div>
+        <div class="agent-row"><div class="a-dot idle" id="adot-fu"></div><div class="a-info"><div class="a-name">🔁 Follow-up Agent</div><div class="a-next" id="anext-fu">Every 1hr</div></div><button class="a-trigger" onclick="triggerAgent('followup')">▶ Run</button></div>
+        <div class="agent-row"><div class="a-dot idle" id="adot-im"></div><div class="a-info"><div class="a-name">🧠 Improvement Agent</div><div class="a-next" id="anext-im">Weekly</div></div><button class="a-trigger" onclick="triggerAgent('improvement')">▶ Run</button></div>
+      </div>
+    </div>
+
+    <!-- Plans -->
+    <div class="panel-section">
+      <div class="sec-title"><div class="dot"></div>Plans Sold</div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <div style="flex:1;background:#052e16;border:1px solid #059669;border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:1.4rem;font-weight:700;color:#34d399" id="plan-core">—</div>
+          <div style="font-size:.6rem;color:#6ee7b7;margin-top:2px">14-Day Core ₹1,299</div>
+        </div>
+        <div style="flex:1;background:#0a1a2e;border:1px solid #2563eb;border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:1.4rem;font-weight:700;color:#93c5fd" id="plan-starter">—</div>
+          <div style="font-size:.6rem;color:#93c5fd;margin-top:2px">7-Day Starter ₹499</div>
+        </div>
       </div>
     </div>
 
@@ -1340,6 +1355,13 @@ async function loadStats() {
     if (botCnt) { botCnt.style.display=''; botCnt.textContent=d.today||0; }
     const youCnt = document.getElementById('cnt-you');
     if (youCnt && d.converted) { youCnt.style.display=''; youCnt.textContent='✓'+d.converted; }
+    // Plans breakdown
+    if (d.plans) {
+      const coreEl = document.getElementById('plan-core');
+      const starterEl = document.getElementById('plan-starter');
+      if (coreEl) coreEl.textContent = d.plans.core_1299 || 0;
+      if (starterEl) starterEl.textContent = d.plans.starter_499 || 0;
+    }
     // Update agent "last run" from insights
   } catch(e) {}
 }
@@ -1410,6 +1432,7 @@ function init() {
   startTraffic();
   loadFunnel();
   loadStats();
+  loadAgents();
   // Start with a few log entries
   setTimeout(tickLog, 800);
   setTimeout(tickLog, 1800);
@@ -1423,11 +1446,33 @@ window.addEventListener('resize', () => {
   resizeTimer = setTimeout(() => { buildNodes(); }, 200);
 });
 
+// ── Load real agent status ──
+async function loadAgents() {
+  try {
+    const d = await apiFetch('/agents');
+    const dot = (id, on) => {
+      const el = document.getElementById('adot-'+id);
+      if (el) { el.className = 'a-dot ' + (on ? 'on' : 'idle'); }
+    };
+    const sub = (id, txt) => {
+      const el = document.getElementById('anext-'+id);
+      if (el) el.textContent = txt;
+    };
+    if (d.funnel?.lastRun) { dot('fa','on'); sub('fa','Last: '+d.funnel.lastRun); }
+    if (d.insights?.lastRun) { dot('ia','on'); sub('ia','Last: '+d.insights.lastRun); }
+    if (d.followup?.staleLeads > 0) { dot('fu','on'); sub('fu',d.followup.staleLeads+' stale leads'); }
+    else sub('fu','Every 1hr');
+    if (d.improvement?.lastInsight) sub('im','Last insight: "'+d.improvement.lastInsight.text+'"');
+    pulseNode('fa'); pulseNode('ia');
+  } catch(e) {}
+}
+
 // Refresh data every 30s
-setInterval(() => { loadFunnel(); loadStats(); }, 30000);
+setInterval(() => { loadFunnel(); loadStats(); loadAgents(); }, 30000);
 
 // Wait for layout then init
 requestAnimationFrame(() => { requestAnimationFrame(init); });
+
 
   })();
 }
