@@ -1,283 +1,183 @@
-﻿// ============================================================
-// bot.js - Core bot engine
-// ALL platforms call processMessage() from here.
-// Fix a bug here → fixed on WhatsApp + Instagram + Messenger + Website simultaneously.
-// ============================================================
+﻿// bot.js - Core bot engine
 const Anthropic = require("@anthropic-ai/sdk");
 const { ANTHROPIC_API_KEY, CLAUDE_MODEL, CLAUDE_MAX_TOKENS } = require("./config");
-const { getOrCreateConversation, updateConversation, logMessage, getRecentMessages, resetConversation, createBuyer } = require("./db");
+const { getOrCreateConversation, updateConversation, updateName, logMessage, getRecentMessages, resetConversation, createBuyer } = require("./db");
 const { getSystemPrompt } = require("./prompt");
 const { crmUpsertLead, crmMarkConverted } = require("./notion");
 const { detectPaymentInText, isPaymentStage, getOnboardingMessage, getPendingMessage } = require("./payment");
 
 const claude = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
-
-// Keywords that restart the conversation
 const RESTART_KEYWORDS = ["restart", "reset", "start over", "shuru", "naya", "dobara"];
-
-// Keywords that indicate purchase intent (trigger close/objection → payment link share)
 const BUY_KEYWORDS = ["haan", "ha", "yes", "buy", "kharid", "order", "ready", "le lo", "bhejo", "send", "payment", "chahiye", "lena hai"];
 
-// ============================================================
-// Language Detection & Switching
-// ============================================================
+// === NAME DETECTION ===
+const NAME_PATTERNS = [
+  /(?:mera|meri)\s+naam\s+([A-Za-z\u0900-\u097F]+)\s*(?:hai|h|he|hain)?/i,
+  /(?:main|mai)\s+([A-Za-z\u0900-\u097F]+)\s+(?:hoon|hun|hu)/i,
+  /(?:my name is|i am|i'm|call me)\s+([A-Za-z\u0900-\u097F]+)/i,
+  /naam\s+([A-Za-z\u0900-\u097F]+)\s*(?:hai|h|he)?/i,
+];
+const NOT_A_NAME = new Set(["theek","ok","okay","haan","nahi","hai","hun","hoon","aap","main","mein","ek","do","teen","yes","no","sure","thanks","hello","hi","bye","good","bad"]);
 
+function extractNameFromText(text) {
+  const isCorrecting = /\b(nahi|nai|not|wrong|actually|sahi|correction)\b/i.test(text);
+  for (const p of NAME_PATTERNS) {
+    const m = text.match(p);
+    if (m) {
+      const c = m[1].trim();
+      if (c.length >= 2 && !NOT_A_NAME.has(c.toLowerCase())) {
+        return { name: c.charAt(0).toUpperCase() + c.slice(1), isCorrecting };
+      }
+    }
+  }
+  return null;
+}
+
+// === LANGUAGE DETECTION ===
 function detectExplicitSwitch(text) {
-  const lower = text.toLowerCase().trim();
-  if (/hindi\s*(me|mein|mai|main|m)\b/.test(lower) || lower === "hindi") return "hindi";
-  if (
-    /\bin english\b/.test(lower) ||
-    /english\s*(me|mein|mai|main|please|m)\b/.test(lower) ||
-    /\bspeak english\b/.test(lower) ||
-    lower === "english"
-  ) return "english";
+  const l = text.toLowerCase().trim();
+  if (/hindi\s*(me|mein|mai|main|m)\b/.test(l) || l === "hindi") return "hindi";
+  if (/\bin english\b/.test(l) || /english\s*(me|mein|please|m)\b/.test(l) || l === "english") return "english";
   return null;
 }
 
 const SCRIPT_LANGS = [
-  { pattern: /[\u0900-\u097F]/, lang: "hindi"     },
-  { pattern: /[\u0600-\u06FF]/, lang: "arabic"    },
-  { pattern: /[\u0400-\u04FF]/, lang: "russian"   },
-  { pattern: /[\u4E00-\u9FFF]/, lang: "chinese"   },
-  { pattern: /[\u3040-\u30FF]/, lang: "japanese"  },
-  { pattern: /[\uAC00-\uD7AF]/, lang: "korean"    },
-  { pattern: /[\u0370-\u03FF]/, lang: "greek"     },
-  { pattern: /[\u0590-\u05FF]/, lang: "hebrew"    },
-  { pattern: /[\u0E00-\u0E7F]/, lang: "thai"      },
-  { pattern: /[\u0980-\u09FF]/, lang: "bengali"   },
-  { pattern: /[\u0A80-\u0AFF]/, lang: "gujarati"  },
-  { pattern: /[\u0C00-\u0C7F]/, lang: "telugu"    },
-  { pattern: /[\u0B80-\u0BFF]/, lang: "tamil"     },
-  { pattern: /[\u0D00-\u0D7F]/, lang: "malayalam" },
-  { pattern: /[\u0A00-\u0A7F]/, lang: "punjabi"   },
+  {pattern:/[\u0900-\u097F]/,lang:"hindi"},{pattern:/[\u0600-\u06FF]/,lang:"arabic"},
+  {pattern:/[\u0400-\u04FF]/,lang:"russian"},{pattern:/[\u4E00-\u9FFF]/,lang:"chinese"},
+  {pattern:/[\u3040-\u30FF]/,lang:"japanese"},{pattern:/[\uAC00-\uD7AF]/,lang:"korean"},
+  {pattern:/[\u0980-\u09FF]/,lang:"bengali"},{pattern:/[\u0A80-\u0AFF]/,lang:"gujarati"},
+  {pattern:/[\u0C00-\u0C7F]/,lang:"telugu"},{pattern:/[\u0B80-\u0BFF]/,lang:"tamil"},
+  {pattern:/[\u0D00-\u0D7F]/,lang:"malayalam"},{pattern:/[\u0A00-\u0A7F]/,lang:"punjabi"},
 ];
-
-const HINGLISH_WORDS = [
-  "hai", "hain", "hoon", "mera", "meri", "aap", "kya",
-  "nahi", "nai", "bhi", "ke", "ka", "ki", "se", "aur",
-  "lekin", "bohot", "bahut", "accha", "theek", "bilkul",
-  "iska", "uska", "yeh", "woh", "kuch", "sab", "sirf",
-  "abhi", "phir", "toh", "bolo", "batao", "samajh",
-];
+const HINGLISH_WORDS = ["hai","hain","hoon","mera","meri","aap","kya","nahi","nai","bhi","ke","ka","ki","se","aur","lekin","bohot","bahut","accha","theek","yeh","woh","toh","bolo","batao"];
 
 function detectLanguage(text) {
-  for (const { pattern, lang } of SCRIPT_LANGS) {
-    if (pattern.test(text)) return lang;
-  }
-  const lower = text.toLowerCase();
-  if (HINGLISH_WORDS.some(w => new RegExp(`\\b${w}\\b`).test(lower))) return "hinglish";
+  for (const {pattern,lang} of SCRIPT_LANGS) if (pattern.test(text)) return lang;
+  const l = text.toLowerCase();
+  if (HINGLISH_WORDS.some(w => new RegExp(`\\b${w}\\b`).test(l))) return "hinglish";
   if (/^[a-zA-Z0-9\s.,!?'"()\-:;]+$/.test(text.trim()) && text.trim().split(/\s+/).length >= 3) return "english";
   return "hinglish";
 }
 
-// ============================================================
-// State Machine
-// ============================================================
-
-function getNextStage(currentStage, userMessage) {
-  const lower = userMessage.toLowerCase();
-
-  if (RESTART_KEYWORDS.some(k => lower.includes(k))) return "initiated";
-
-  // Buy intent at close/objection → stay in close (Claude will share payment link)
-  // Actual conversion happens when payment is detected
-  if (["close", "objection"].includes(currentStage) && BUY_KEYWORDS.some(k => lower.includes(k))) {
-    return "close"; // Claude shares the payment link now; conversion happens after payment
-  }
-
-  const flow = {
-    "initiated":       "qualifier",
-    "qualifier":       "duration",
-    "duration":        "discharge",
-    "discharge":       "reveal",
-    "reveal":          "insight",
-    "insight":         "close",
-    "close":           "objection",
-    "objection":       "close",
-    "payment_pending": "payment_pending", // stays here until admin confirms
-    "converted":       "converted",
-  };
-
-  return flow[currentStage] || currentStage;
+// === STATE MACHINE ===
+function getNextStage(stage, msg) {
+  const l = msg.toLowerCase();
+  if (RESTART_KEYWORDS.some(k=>l.includes(k))) return "initiated";
+  if (["close","objection"].includes(stage) && BUY_KEYWORDS.some(k=>l.includes(k))) return "close";
+  return {initiated:"qualifier",qualifier:"duration",duration:"discharge",discharge:"reveal",reveal:"insight",insight:"close",close:"objection",objection:"close",payment_pending:"payment_pending",converted:"converted"}[stage] || stage;
 }
 
 function detectSinusType(messages) {
-  const text = messages.map(m => m.content).join(" ").toLowerCase();
-  if (text.match(/sneezing|allerg|season|watery|morning worse/)) return "kaphavata_allergic";
-  if (text.match(/dry|no discharge|one.?sided|wind/))             return "vata_dry";
-  if (text.match(/yellow|green|thick.*discharge|facial pain|fever/)) return "pitta_inflammatory";
-  if (text.match(/congestion|heavy|white.*mucus|after.*meal/))    return "kapha_congestive";
-  if (text.match(/years|chronic|tried many|multiple treatment/))  return "tridosha_chronic";
+  const t = messages.map(m=>m.content).join(" ").toLowerCase();
+  if (t.match(/sneezing|allerg|season|watery/)) return "kaphavata_allergic";
+  if (t.match(/dry|no discharge|one.?sided/))  return "vata_dry";
+  if (t.match(/yellow|green|thick.*discharge|facial pain/)) return "pitta_inflammatory";
+  if (t.match(/congestion|heavy|white.*mucus|after.*meal/)) return "kapha_congestive";
+  if (t.match(/years|chronic|tried many/)) return "tridosha_chronic";
   return null;
 }
 
-function getPlanForSinusType(sinusType) {
-  return ["kaphavata_allergic", "pitta_inflammatory", "tridosha_chronic"].includes(sinusType)
-    ? "core_1299"
-    : "starter_499";
+function getPlanForSinusType(st) {
+  return ["kaphavata_allergic","pitta_inflammatory","tridosha_chronic"].includes(st) ? "core_1299" : "starter_499";
 }
 
-// ============================================================
-// Claude AI Call
-// ============================================================
-
+// === CLAUDE CALL ===
 async function callClaude(conv, history, userText) {
   const system = getSystemPrompt(conv);
-  let msgs = (history || []).map(m => ({ role: m.role, content: m.content }));
-  while (msgs.length > 0 && msgs[0].role !== "user") msgs.shift();
-  if (msgs.length === 0 || msgs[msgs.length - 1].role === "assistant") {
-    msgs.push({ role: "user", content: userText });
-  }
-  const response = await claude.messages.create({
-    model: CLAUDE_MODEL,
-    max_tokens: CLAUDE_MAX_TOKENS,
-    system,
-    messages: msgs,
-  });
-  return response.content[0].text;
+  let msgs = (history||[]).map(m=>({role:m.role,content:m.content}));
+  while (msgs.length>0 && msgs[0].role!=="user") msgs.shift();
+  if (msgs.length===0 || msgs[msgs.length-1].role==="assistant") msgs.push({role:"user",content:userText});
+  const r = await claude.messages.create({model:CLAUDE_MODEL,max_tokens:CLAUDE_MAX_TOKENS,system,messages:msgs});
+  return r.content[0].text;
 }
 
-// ============================================================
-// Payment Screenshot Handler
-// Called directly by platform handlers when an IMAGE message is received
-// ============================================================
-
-/**
- * processPaymentScreenshot - called when customer sends an image at payment stage
- * Returns the reply to send back, or null if we should ignore the image.
- */
+// === PAYMENT SCREENSHOT ===
 async function processPaymentScreenshot(platform, userId) {
   try {
     let conv = await getOrCreateConversation(platform, userId);
-
-    // Only treat images as payment proof if we're in a payment-relevant stage
     if (!isPaymentStage(conv.stage)) return null;
-
-    // Move to payment_pending and acknowledge
-    conv = await updateConversation(conv.id, { stage: "payment_pending" });
-    await logMessage(conv.id, "user", "[Payment screenshot received]");
-
+    conv = await updateConversation(conv.id, {stage:"payment_pending"});
+    await logMessage(conv.id,"user","[Payment screenshot received]");
     const reply = getPendingMessage(conv.language);
-    await logMessage(conv.id, "assistant", reply);
-
-    // Sync CRM
-    crmUpsertLead(conv).catch(() => {});
-
+    await logMessage(conv.id,"assistant",reply);
+    crmUpsertLead(conv).catch(()=>{});
     return reply;
-  } catch (err) {
-    console.error(`[Bot] processPaymentScreenshot error [${platform}/${userId}]:`, err.message);
+  } catch(err) {
+    console.error(`[Bot] screenshot error [${platform}/${userId}]:`,err.message);
     return null;
   }
 }
 
-// ============================================================
-// Main Entry Point
-// ============================================================
-
-/**
- * processMessage - called by all platform handlers
- */
-async function processMessage(platform, userId, userText) {
+// === MAIN ENTRY POINT ===
+// metaName: display name from WhatsApp contacts[] or FB/IG Graph API
+async function processMessage(platform, userId, userText, metaName = null) {
   try {
-    // 1. Get or create conversation
-    let conv = await getOrCreateConversation(platform, userId);
+    let conv = await getOrCreateConversation(platform, userId, metaName);
 
-    // 2. Handle restart keyword
-    const lower = userText.toLowerCase();
-    if (RESTART_KEYWORDS.some(k => lower.includes(k))) {
+    // Restart
+    if (RESTART_KEYWORDS.some(k=>userText.toLowerCase().includes(k))) {
       conv = await resetConversation(conv.id);
-      return languageMsg(conv.language, "restart");
+      return langMsg(conv.language,"restart");
     }
 
-    // 3. Language detection
-    const explicitLang = detectExplicitSwitch(userText);
-    const newLang = explicitLang || detectLanguage(userText);
-    if (newLang !== conv.language) {
-      conv = await updateConversation(conv.id, { language: newLang });
-      console.log(`[Bot] Language: ${conv.language} → ${newLang} [${platform}/${userId}]`);
+    // Language
+    const newLang = detectExplicitSwitch(userText) || detectLanguage(userText);
+    if (newLang !== conv.language) conv = await updateConversation(conv.id,{language:newLang});
+
+    // Name detection & correction
+    const nm = extractNameFromText(userText);
+    if (nm && (!conv.name || nm.isCorrecting)) {
+      conv = await updateName(conv.id, nm.name, nm.isCorrecting ? "corrected" : "self");
+      console.log(`[Bot] Name ${nm.isCorrecting?"corrected":"detected"}: "${nm.name}" [${platform}/${userId}]`);
     }
 
-    // 4. Payment detection — check BEFORE normal flow
-    //    If customer is in payment stage and says "paid via GPay" etc → handle it
+    // Payment detection
     if (isPaymentStage(conv.stage)) {
       const payment = detectPaymentInText(userText);
       if (payment) {
-        console.log(`[Bot] Payment detected: type=${payment.type} confirmed=${payment.confirmed} [${platform}/${userId}]`);
-        await logMessage(conv.id, "user", userText);
-
+        await logMessage(conv.id,"user",userText);
         if (payment.confirmed) {
-          // Razorpay auto-confirmed → convert immediately
           const plan = conv.plan || "starter_499";
-          const price = plan === "core_1299" ? 1299 : 499;
-          conv = await updateConversation(conv.id, { stage: "converted", converted_at: new Date().toISOString() });
-          await createBuyer(conv.id, platform, userId, plan, price);
-          const onboarding = getOnboardingMessage(plan, conv.language);
-          await logMessage(conv.id, "assistant", onboarding);
-          crmMarkConverted(conv).catch(() => {});
-          crmUpsertLead(conv).catch(() => {});
-          return onboarding;
+          const price = plan==="core_1299" ? 1299 : 499;
+          conv = await updateConversation(conv.id,{stage:"converted",converted_at:new Date().toISOString()});
+          await createBuyer(conv.id,platform,userId,plan,price,conv.name);
+          const msg = getOnboardingMessage(plan,conv.language);
+          await logMessage(conv.id,"assistant",msg);
+          crmMarkConverted(conv).catch(()=>{}); crmUpsertLead(conv).catch(()=>{});
+          return msg;
         } else {
-          // GPay / Paytm / UPI — needs admin verification
-          conv = await updateConversation(conv.id, { stage: "payment_pending" });
-          const pending = getPendingMessage(conv.language);
-          await logMessage(conv.id, "assistant", pending);
-          crmUpsertLead(conv).catch(() => {});
-          return pending;
+          conv = await updateConversation(conv.id,{stage:"payment_pending"});
+          const msg = getPendingMessage(conv.language);
+          await logMessage(conv.id,"assistant",msg);
+          crmUpsertLead(conv).catch(()=>{});
+          return msg;
         }
       }
     }
 
-    // 5. Log user message
-    await logMessage(conv.id, "user", userText);
-
-    // 6. Fetch recent history for Claude
+    // Normal flow
+    await logMessage(conv.id,"user",userText);
     const history = await getRecentMessages(conv.id);
-
-    // 7. Advance state machine
-    const nextStage = getNextStage(conv.stage, userText);
-    const updates = {
-      stage: nextStage,
-      message_count: (conv.message_count || 0) + 1,
-    };
-
-    // 8. Detect sinus type in later stages
-    if (!conv.sinus_type && ["discharge", "reveal", "insight", "close"].includes(nextStage)) {
-      const detected = detectSinusType(history);
-      if (detected) {
-        updates.sinus_type = detected;
-        updates.plan = getPlanForSinusType(detected);
-      }
+    const nextStage = getNextStage(conv.stage,userText);
+    const updates = {stage:nextStage, message_count:(conv.message_count||0)+1};
+    if (!conv.sinus_type && ["discharge","reveal","insight","close"].includes(nextStage)) {
+      const st = detectSinusType(history);
+      if (st) { updates.sinus_type=st; updates.plan=getPlanForSinusType(st); }
     }
-
-    // 9. Save state
-    conv = await updateConversation(conv.id, updates);
-
-    // 10. Get Claude reply
-    const reply = await callClaude(conv, history, userText);
-
-    // 11. Log reply
-    await logMessage(conv.id, "assistant", reply);
-
-    // 12. Sync Notion CRM (fire-and-forget)
-    crmUpsertLead(conv).catch(() => {});
-
+    conv = await updateConversation(conv.id,updates);
+    const reply = await callClaude(conv,history,userText);
+    await logMessage(conv.id,"assistant",reply);
+    crmUpsertLead(conv).catch(()=>{});
     return reply;
-  } catch (err) {
-    console.error(`[Bot] processMessage error [${platform}/${userId}]:`, err.message);
+  } catch(err) {
+    console.error(`[Bot] error [${platform}/${userId}]:`,err.message);
     return "Ek second — kuch technical issue aa gaya. Thodi der mein dobara message karein.";
   }
 }
 
-// ---- Language-specific system messages ----
-function languageMsg(lang, key) {
-  const msgs = {
-    restart: {
-      hindi:    "नमस्ते! फिर से शुरू करते हैं। आपको सबसे ज़्यादा कौन सी सिनस की समस्या है?",
-      hinglish: "Namaste! Naye sire se shuru karte hain. Aapki main sinus problem kya hai?",
-      english:  "Hello! Let us start fresh. What is your main sinus concern?",
-    },
-  };
-  return (msgs[key] || {})[lang] || (msgs[key] || {}).hinglish || "Let us start again.";
+function langMsg(lang, key) {
+  const m = {restart:{hindi:"नमस्ते! फिर से शुरू करते हैं। सिनस की मुख्य समस्या क्या है?",hinglish:"Namaste! Naye sire se shuru karte hain. Aapki main sinus problem kya hai?",english:"Hello! Let us start fresh. What is your main sinus concern?"}};
+  return (m[key]||{})[lang] || (m[key]||{}).hinglish || "Let us start again.";
 }
 
 module.exports = { processMessage, processPaymentScreenshot };

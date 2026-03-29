@@ -18,7 +18,7 @@ async function crmUpsertLead(conv) {
 
   try {
     const props = {
-      "Name":      { title: [{ text: { content: conv.user_id } }] },
+      "Name":      { title: [{ text: { content: conv.name || conv.user_id } }] },
       "Platform":  { select: { name: conv.platform } },
       "Stage":     { select: { name: conv.stage } },
       "Language":  { select: { name: conv.language } },
@@ -68,3 +68,4 @@ async function crmMarkConverted(conv) {
 }
 
 module.exports = { crmUpsertLead, crmMarkConverted };
+

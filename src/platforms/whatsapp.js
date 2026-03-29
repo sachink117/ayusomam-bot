@@ -1,7 +1,5 @@
-﻿// ============================================================
-// platforms/whatsapp.js - WhatsApp Cloud API handler
-// Handles text messages (with buffering) and image messages (payment screenshots)
-// ============================================================
+﻿// platforms/whatsapp.js - WhatsApp handler
+// Name comes from contacts[].profile.name in the webhook payload (no extra API call needed)
 const express = require("express");
 const crypto = require("crypto");
 const axios = require("axios");
@@ -9,92 +7,69 @@ const { WEBHOOK_VERIFY_TOKEN, META_APP_SECRET, WA_PHONE_NUMBER_ID, WA_ACCESS_TOK
 const { processMessage, processPaymentScreenshot } = require("../bot");
 
 const router = express.Router();
-
-// In-memory buffer: userId → { timer, messages[] }
 const msgBuffer = new Map();
+// userId → name (cached from contacts[] in first webhook event)
+const nameCache = new Map();
 
-// ---- Webhook Verification ----
 router.get("/", (req, res) => {
   const { "hub.mode": mode, "hub.verify_token": token, "hub.challenge": challenge } = req.query;
-  if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
-    console.log("[WhatsApp] Webhook verified");
-    return res.send(challenge);
-  }
+  if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) return res.send(challenge);
   res.sendStatus(403);
 });
 
-// ---- Incoming Messages ----
 router.post("/", (req, res) => {
-  if (!verifySignature(req)) {
-    console.warn("[WhatsApp] Invalid signature");
-    return res.sendStatus(401);
-  }
-
-  res.sendStatus(200); // Acknowledge immediately (Meta requires 200 within 20s)
-
+  if (!verifySignature(req)) return res.sendStatus(401);
+  res.sendStatus(200);
   try {
     const entry = req.body?.entry?.[0];
     const change = entry?.changes?.[0]?.value;
     if (!change?.messages) return;
 
+    // WhatsApp provides display name in contacts[] alongside messages[]
+    const contacts = change.contacts || [];
+    for (const c of contacts) {
+      if (c.wa_id && c.profile?.name) nameCache.set(c.wa_id, c.profile.name);
+    }
+
     for (const msg of change.messages) {
       const userId = msg.from;
-
-      if (msg.type === "text") {
-        // Buffer text messages to combine rapid multi-part messages
-        bufferMessage(userId, msg.text.body);
-
-      } else if (msg.type === "image") {
-        // Image received — treat as potential payment screenshot
-        handleImage(userId);
-
-      }
-      // All other types (video, audio, sticker, location) are silently ignored
+      const name = nameCache.get(userId) || null;
+      if (msg.type === "text") bufferMessage(userId, msg.text.body, name);
+      else if (msg.type === "image") handleImage(userId);
     }
   } catch (err) {
-    console.error("[WhatsApp] Webhook parse error:", err.message);
+    console.error("[WhatsApp] parse error:", err.message);
   }
 });
 
-// ---- Message Buffering ----
-
-function bufferMessage(userId, text) {
-  if (!msgBuffer.has(userId)) {
-    msgBuffer.set(userId, { timer: null, messages: [] });
-  }
+function bufferMessage(userId, text, name) {
+  if (!msgBuffer.has(userId)) msgBuffer.set(userId, { timer: null, messages: [], name });
   const entry = msgBuffer.get(userId);
   entry.messages.push(text);
-
   if (entry.timer) clearTimeout(entry.timer);
   entry.timer = setTimeout(() => {
     const combined = entry.messages.join(" ");
+    const n = entry.name;
     msgBuffer.delete(userId);
-    handleText(userId, combined);
+    handleText(userId, combined, n);
   }, WA_BUFFER_MS);
 }
 
-async function handleText(userId, text) {
-  console.log(`[WhatsApp] text from ${userId}: ${text}`);
+async function handleText(userId, text, name) {
+  console.log(`[WhatsApp] ${name||userId}: ${text}`);
   try {
-    const reply = await processMessage("whatsapp", userId, text);
+    const reply = await processMessage("whatsapp", userId, text, name);
     await sendWhatsApp(userId, reply);
-  } catch (err) {
-    console.error(`[WhatsApp] handleText error for ${userId}:`, err.message);
-  }
+  } catch (err) { console.error(`[WhatsApp] handleText error:`, err.message); }
 }
 
 async function handleImage(userId) {
-  console.log(`[WhatsApp] image from ${userId}`);
   try {
     const reply = await processPaymentScreenshot("whatsapp", userId);
     if (reply) await sendWhatsApp(userId, reply);
-    // If reply is null, the image was outside payment stage — silently ignore
-  } catch (err) {
-    console.error(`[WhatsApp] handleImage error for ${userId}:`, err.message);
-  }
+  } catch (err) { console.error(`[WhatsApp] handleImage error:`, err.message); }
 }
 
-// ---- Send Message ----
 async function sendWhatsApp(to, text) {
   try {
     await axios.post(
@@ -102,12 +77,9 @@ async function sendWhatsApp(to, text) {
       { messaging_product: "whatsapp", to, type: "text", text: { body: text } },
       { headers: { Authorization: `Bearer ${WA_ACCESS_TOKEN}`, "Content-Type": "application/json" } }
     );
-  } catch (err) {
-    console.error("[WhatsApp] send failed:", err.response?.data || err.message);
-  }
+  } catch (err) { console.error("[WhatsApp] send failed:", err.response?.data || err.message); }
 }
 
-// ---- HMAC Signature Verification ----
 function verifySignature(req) {
   if (!META_APP_SECRET) return true;
   const sig = req.headers["x-hub-signature-256"];
