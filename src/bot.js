@@ -1,10 +1,11 @@
 ﻿// bot.js - Core bot engine
 const Anthropic = require("@anthropic-ai/sdk");
 const { ANTHROPIC_API_KEY, CLAUDE_MODEL, CLAUDE_MAX_TOKENS } = require("./config");
-const { getOrCreateConversation, updateConversation, updateName, logMessage, getRecentMessages, resetConversation, createBuyer } = require("./db");
+const { getOrCreateConversation, updateConversation, updateName, logMessage, getRecentMessages, resetConversation, createBuyer, logFunnelEvent, logObjection } = require("./db");
 const { getSystemPrompt } = require("./prompt");
 const { crmUpsertLead, crmMarkConverted } = require("./notion");
 const { detectPaymentInText, isPaymentStage, getOnboardingMessage, getPendingMessage } = require("./payment");
+const { profileLead } = require("./agents/profiler");
 
 const claude = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
 const RESTART_KEYWORDS = ["restart", "reset", "start over", "shuru", "naya", "dobara"];
@@ -100,6 +101,8 @@ async function processPaymentScreenshot(platform, userId) {
     await logMessage(conv.id,"user","[Payment screenshot received]");
     const reply = getPendingMessage(conv.language);
     await logMessage(conv.id,"assistant",reply);
+    // Run profiler in background to extract structured lead data
+    profileLead(conv.id, conv.stage).catch(()=>{});
     crmUpsertLead(conv).catch(()=>{});
     return reply;
   } catch(err) {
@@ -165,8 +168,17 @@ async function processMessage(platform, userId, userText, metaName = null) {
       if (st) { updates.sinus_type=st; updates.plan=getPlanForSinusType(st); }
     }
     conv = await updateConversation(conv.id,updates);
+    // Log funnel event for analytics
+    if (nextStage !== conv.stage) logFunnelEvent(conv.id, platform, conv.stage, nextStage).catch(()=>{});
+    // Detect objections
+    const objWords = ["sochenge","will think","expensive","mehenga","kaam karega","will it work","sure nahi"];
+    if (["close","objection"].includes(nextStage) && objWords.some(w=>lower.includes(w))) {
+      logObjection(conv.id, userText.slice(0,100), nextStage).catch(()=>{});
+    }
     const reply = await callClaude(conv,history,userText);
     await logMessage(conv.id,"assistant",reply);
+    // Run profiler in background to extract structured lead data
+    profileLead(conv.id, conv.stage).catch(()=>{});
     crmUpsertLead(conv).catch(()=>{});
     return reply;
   } catch(err) {
@@ -181,3 +193,4 @@ function langMsg(lang, key) {
 }
 
 module.exports = { processMessage, processPaymentScreenshot };
+

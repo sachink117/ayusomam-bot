@@ -142,6 +142,31 @@ async function resetConversation(convId) {
   });
 }
 
+
+// ---- Funnel Events ----
+
+/**
+ * Log every stage transition. Used by FunnelAgent for accurate drop-off analytics.
+ */
+async function logFunnelEvent(convId, platform, fromStage, toStage) {
+  if (fromStage === toStage) return; // no transition
+  const { error } = await supabase
+    .from("funnel_events")
+    .insert({ conversation_id: convId, platform, from_stage: fromStage, to_stage: toStage });
+  if (error) console.error("[DB] logFunnelEvent:", error.message);
+}
+
+// ---- Objections ----
+
+/**
+ * Log a detected objection phrase for InsightsAgent to analyse.
+ */
+async function logObjection(convId, objectionText, stage) {
+  const { error } = await supabase
+    .from("objections")
+    .insert({ conversation_id: convId, objection_text: objectionText, stage });
+  if (error) console.error("[DB] logObjection:", error.message);
+}
 module.exports = {
   getOrCreateConversation,
   updateConversation,
@@ -154,4 +179,7 @@ module.exports = {
   getPendingThankYous,
   markThankYouSent,
   resetConversation,
+  logFunnelEvent,
+  logObjection,
 };
+
